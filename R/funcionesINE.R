@@ -443,8 +443,8 @@ etiquetasLineas <- function(graph, posiciones, precision=1)
     
     
     
-   
-    print(dato,i,tam = length(d$x))
+    print(d$x)
+    print(length(d$x))
     d$etiqueta <- formatC(as.numeric(completarEtiquetas(dato,i,tam = length(d$x))), format = 'f', big.mark = ',', digits = pkg.env$precision, drop0trailing = enteros)
     print("#####LAS ETIQUETAS SON ##########" )
     print(d$etiqueta)

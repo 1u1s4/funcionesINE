@@ -16,7 +16,7 @@ cambiarGraficas <- function(tamFuente){
     panel.grid.minor = ggplot2::element_line(colour = NA),
     panel.grid.major.y =  ggplot2::element_line(colour = NA),
     axis.line = ggplot2::element_line(colour = pkg.env$grisBase),
-    #plot.spacing = rep(grid::unit(0,"null"),4), `panel.margin` is deprecated. Please use `panel.spacing` property instead 
+    #plot.margin = rep(grid::unit(0,"null"),4), `panel.margin` is deprecated. Please use `panel.spacing` property instead 
     plot.spacing = rep(grid::unit(0,"null"),4),
     axis.ticks = ggplot2::element_line(colour = NA),
     axis.ticks.x = ggplot2::element_line( size=NULL, color=NA ),
@@ -48,16 +48,16 @@ cambiarGraficas <- function(tamFuente){
     axis.line.y = ggplot2::element_line(colour = NA),
     axis.text.y = ggplot2::element_text(colour = NA),
     panel.margin = grid::unit(0.2,"cm"),
-    #plot.spacing = grid::unit(c(1,0,0,-1),"cm"),
+    #plot.margin = grid::unit(c(1,0,0,-1),"cm"),
     #strip.text = ggplot2::element_text(family = "Open Sans Condensed Light", colour = "black", face = "plain", size = pkg.env$fontSize, hjust = 0.5, vjust =1.7, angle = 0, lineheight = 0.9),
-    plot.spacing = grid::unit(c(0,0,0,-1),"cm"),
+    plot.margin = grid::unit(c(0,0,0,-1),"cm"),
     strip.text = ggplot2::element_text(family = "Open Sans Condensed Light", colour = "black", face = "plain", size = pkg.env$fontSize, hjust = 0.5, vjust = 1.5 , angle = 0, lineheight = 0.9)
   )
   
   
   pkg.env$temaAnillo <- pkg.env$temaINE
   pkg.env$temaAnillo <- pkg.env$temaAnillo +ggplot2::theme(
-    plot.spacing = grid::unit(c(0,inc2mm(3.19/4),0,-20),"mm"), axis.line.y = ggplot2::element_line(colour=NA),
+    plot.margin = grid::unit(c(0,inc2mm(3.19/4),0,-20),"mm"), axis.line.y = ggplot2::element_line(colour=NA),
     axis.ticks.y = ggplot2::element_line(colour=NA),
     axis.line.x = ggplot2::element_line(colour = NA),
     panel.margin = grid::unit(c(0,inc2mm(3.19/4),0,-20),"mm"),
@@ -78,7 +78,7 @@ cambiarGraficas <- function(tamFuente){
 #     panel.grid.minor = ggplot2::element_line(colour = NA),
 #     panel.grid.major.y =  ggplot2::element_line(colour = NA),
 #     axis.line = ggplot2::element_line(colour = pkg.env$grisBase),
-#     plot.spacing = rep(grid::unit(0,"null"),4),
+#     plot.margin = rep(grid::unit(0,"null"),4),
 #     axis.ticks = ggplot2::element_line(colour = NA),
 #     axis.ticks.x = ggplot2::element_line( size=NULL, color=NA ),
 #     axis.ticks.y = ggplot2::element_line(size = NULL, color=NA),

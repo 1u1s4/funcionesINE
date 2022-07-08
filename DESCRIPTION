@@ -1,0 +1,33 @@
+Package: funcionesINE
+Type: Package
+Title: Funcion para estilos y creacion de graficas
+Version: 1.0
+Date: 2015-01-10
+Author: Hugo Garcia <hugoallangm@gmail.com>
+Maintainer: Hugo Garcia <hugoallanmg@gmail.com>
+Imports: 
+  dataframes2xls,
+  extrafont,
+  foreign,
+  ggplot2(>= 1.0.0),
+  grid,
+  gridExtra,
+  tikzDevice,
+  tools,
+  plyr,
+  scales,
+  tikzDevice,
+  mailR,
+  stringr, 
+  xlsx,
+  xlsxjars, 
+  extrafontdb,
+  Rttf2pt1, 
+  labeling,
+  munsell,
+  stringi
+Description: Algoritmos basicos para la creacion de cuadros estadisticos con estilos propios
+License: GNU
+LazyData: true
+
+

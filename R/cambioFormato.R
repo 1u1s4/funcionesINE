@@ -3,7 +3,7 @@
 
 cambiarGraficas <- function(tamFuente){
   pkg.env$fontSize <-tamFuente
-  print(c("El tamaño de la fuente es: ", pkg.env$fontSize))
+  #print(c("El tamaño de la fuente es: ", pkg.env$fontSize))
   pkg.env$sizeText <- pkg.env$fontSize * (5/14)
   
   pkg.env$temaINE <- ggplot2::theme_gray(base_size = pkg.env$fontSize, base_family = "Open Sans Condensed Light")+ ggplot2::theme(
@@ -16,7 +16,8 @@ cambiarGraficas <- function(tamFuente){
     panel.grid.minor = ggplot2::element_line(colour = NA),
     panel.grid.major.y =  ggplot2::element_line(colour = NA),
     axis.line = ggplot2::element_line(colour = pkg.env$grisBase),
-    plot.margin = rep(grid::unit(0,"null"),4),
+    # cambio de margin por spacing
+    plot.spacing = rep(grid::unit(0,"null"),4),
     axis.ticks = ggplot2::element_line(colour = NA),
     axis.ticks.x = ggplot2::element_line( size=NULL, color=NA ),
     axis.ticks.y = ggplot2::element_line(size = NULL, color=NA),
@@ -46,20 +47,24 @@ cambiarGraficas <- function(tamFuente){
     axis.line.x = ggplot2::element_line(colour = NA),
     axis.line.y = ggplot2::element_line(colour = NA),
     axis.text.y = ggplot2::element_text(colour = NA),
-    panel.margin = grid::unit(0.2,"cm"),
+    # cambio de margin por spacing
+    panel.spacing = grid::unit(0.2,"cm"),
     #plot.margin = grid::unit(c(1,0,0,-1),"cm"),
     #strip.text = ggplot2::element_text(family = "Open Sans Condensed Light", colour = "black", face = "plain", size = pkg.env$fontSize, hjust = 0.5, vjust =1.7, angle = 0, lineheight = 0.9),
-    plot.margin = grid::unit(c(0,0,0,-1),"cm"),
+    # cambio de margin por spacing
+    plot.spacing = grid::unit(c(0,0,0,-1),"cm"),
     strip.text = ggplot2::element_text(family = "Open Sans Condensed Light", colour = "black", face = "plain", size = pkg.env$fontSize, hjust = 0.5, vjust = 1.5 , angle = 0, lineheight = 0.9)
   )
   
   
   pkg.env$temaAnillo <- pkg.env$temaINE
   pkg.env$temaAnillo <- pkg.env$temaAnillo +ggplot2::theme(
-    plot.margin = grid::unit(c(0,inc2mm(3.19/4),0,-20),"mm"), axis.line.y = ggplot2::element_line(colour=NA),
+    # cambio de margin por spacing
+    plot.spacing = grid::unit(c(0,inc2mm(3.19/4),0,-20),"mm"), axis.line.y = ggplot2::element_line(colour=NA),
     axis.ticks.y = ggplot2::element_line(colour=NA),
     axis.line.x = ggplot2::element_line(colour = NA),
-    panel.margin = grid::unit(c(0,inc2mm(3.19/4),0,-20),"mm"),
+    # cambio de margin por spacing
+    panel.spacing = grid::unit(c(0,inc2mm(3.19/4),0,-20),"mm"),
     axis.text.y = ggplot2::element_text(colour = NA, vjust = -3, hjust = -3),
     axis.text.x = ggplot2::element_text(family = "Open Sans Condensed Light", colour = "black", face = "plain", size = pkg.env$fontSize, hjust = -10, vjust =-10, angle = 0, lineheight = 0.9)
   ) 

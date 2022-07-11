@@ -1,4 +1,5 @@
 Package: funcionesINE
+Encoding: UTF-8
 Type: Package
 Title: Funcion para estilos y creacion de graficas
 Version: 1.0
@@ -29,5 +30,4 @@ Imports:
 Description: Algoritmos basicos para la creacion de cuadros estadisticos con estilos propios
 License: GNU
 LazyData: true
-
-
+RoxygenNote: 7.2.0

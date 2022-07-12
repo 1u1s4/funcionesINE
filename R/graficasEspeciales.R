@@ -72,7 +72,7 @@ graficaColCategorias <- function(data, etiquetasCategorias = "A", escala = "norm
     )+
     ggplot2::scale_fill_manual(values=colores)+
     #ggplot2::scale_colour_manual(values = colores)+
-    ggplot2::guides(fill = F)
+    ggplot2::guides(fill = "none")
   
   
   ## Rotando el eje X si fuera necesario

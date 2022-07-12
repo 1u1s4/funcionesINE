@@ -166,9 +166,8 @@ graficaLinea <- function(data, color1 = pkg.env$color1, inicio = -1, ancho = 1.5
   }
   
   
-  print(c('El límite es: ', limite))
-  grafica <- grafica + ggplot2::geom_abline(intercept = limite, slope = 0, size = 0.1
-                                            )
+  print(paste('El límite es: ', limite))
+  grafica <- grafica + ggplot2::geom_abline(intercept = limite, slope = 0, size = 0.1)
   if(ggplot2::ggplot_build(grafica)$data[[1]]$y[1] > 3)
   {
     grafica <- grafica + ggplot2::scale_y_continuous(limits = c(limite,final))+

@@ -567,7 +567,7 @@ etiquetasLineasDobles <- function(graph, pos, precision=1)
 #'@param posicion Es la posicion que ocupa el dato dentro del vector
 #'@param tam El tamano del vector de salida
 #'@return El vector completo rellenado de la forma ("", "", dato, "", ...)
-completarEtiquetas <- function(dato,posicion, tam = 5)
+completarEtiquetas <- function(dato, posicion, tam=5)
 {
   etiquetas <- NULL
   for(i in 1:tam)
@@ -578,7 +578,7 @@ completarEtiquetas <- function(dato,posicion, tam = 5)
     }
     else
     {
-      etiquetas <- c(etiquetas,"NA")  
+      etiquetas <- c(etiquetas, "NA")  
     }
   }
   return(etiquetas)

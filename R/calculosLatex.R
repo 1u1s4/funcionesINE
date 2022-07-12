@@ -65,7 +65,11 @@ calcularAlto <- function( texto, factor = 0.90, largo = 20 ){
   
   writeLines("\\makeatletter", texIn)
   
-  writeLines("\\@@end", texIn)
+  #writeLines("\\@@end", texIn)
+  # terminar el documento a manita
+  writeLines("\\end{document}", texIn)
+  
+  writeLines("\\end{tikzpicture}", texIn)
     
   close(texIn)
   

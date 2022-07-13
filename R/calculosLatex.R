@@ -57,11 +57,11 @@ calcularAlto <- function( texto, factor = 0.90, largo = 20 ){
   writeLines(paste("\\node[inner sep=0pt, outer sep=0pt, text width =",as.character(mm2pt(largo)), 
               ", scale = " ,as.character(factor),"] (TeX){",as.character(texto),"};",sep = ""), texIn)
   
-  writeLines(" \\path let \\p1 = ($(TeX.north) - (TeX.south)$),", texIn)
+  writeLines("\\path let \\p1 = ($(TeX.north) - (TeX.south)$),", texIn)
   
   writeLines("\\n1 = {veclen(\\x1,\\y1)} in (TeX.east) -- (TeX.west)", texIn)
   
-  writeLines(" node{ \\typeout{tikzTeXWidth=\\n1} };", texIn)
+  writeLines("node{ \\typeout{tikzTeXWidth=\\n1}};", texIn)
   
   writeLines("\\makeatletter", texIn)
   
@@ -72,13 +72,13 @@ calcularAlto <- function( texto, factor = 0.90, largo = 20 ){
   writeLines("\\end{document}", texIn)
     
   close(texIn)
-  
+  Sys.sleep(4)
   ## Compilación con XeLaTeX
-  cadenaCompilacion <-  paste("xelatex", '-interaction=batchmode', '-halt-on-error',
+  cadenaCompilacion <-  paste("xelatex", '-interaction=batchmode', '-halt-on-error',"--enable-write18",
          '-output-directory', texDir, texFile)
   print(cadenaCompilacion)
-  suppressWarnings(silence <- system( cadenaCompilacion, intern=T, ignore.stderr=T))
-  
+  suppressWarnings(silence <- system( cadenaCompilacion, intern=TRUE, ignore.stderr=TRUE))
+  Sys.sleep(4)
   # Abriendo la bitácora.
   texOut <- file( texLog, 'r' )
   # Leyendo la bitácora.

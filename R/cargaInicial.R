@@ -1,9 +1,12 @@
 .onAttach <- function(libname, pkgname) {
   require(extrafont)
+  require(remotes)
+  remotes::install_version("Rttf2pt1", version = "1.3.8")
   packageStartupMessage("Este paquete usa una fuente en especifico, registrandola")
   ## Load all fonts
   extrafont::loadfonts("pdf", quiet = TRUE)
   extrafont::loadfonts("postscript", quiet = TRUE)
+
   if ( ! "Open Sans Condensed Light" %in% fonts() ) {
     print("Vamos a importar las fuentes, ingrese Y y presione ENTER")
     font_import()

@@ -23,7 +23,7 @@ Imports:
   stringr, 
   xlsx,
   xlsxjars,
-  rjava,
+  rJava,
   extrafontdb,
   Rttf2pt1, 
   labeling,

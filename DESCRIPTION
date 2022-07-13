@@ -2,13 +2,14 @@ Package: funcionesINE
 Encoding: UTF-8
 Type: Package
 Title: Funcion para estilos y creacion de graficas
-Version: 1.0.5
+Version: 1.0.6
 Date: 2015-01-10
 Author: Hugo Garcia <hugoallangm@gmail.com>
 Maintainer: Hugo Garcia <hugoallanmg@gmail.com>
 Imports: 
   dataframes2xls,
   extrafont,
+  remotes,
   foreign,
   ggplot2(>= 1.0.0),
   grid,

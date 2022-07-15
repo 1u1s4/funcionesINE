@@ -77,7 +77,8 @@ calcularAlto <- function( texto, factor = 0.90, largo = 20 ){
   cadenaCompilacion <-  paste("xelatex", '-interaction=batchmode', '-halt-on-error',"--enable-write18",
          '-output-directory', texDir, texFile)
   print(cadenaCompilacion)
-  suppressWarnings(silence <- system( cadenaCompilacion, intern=T, ignore.stderr=T))
+  #suppressWarnings(silence <- system( cadenaCompilacion, intern=T, ignore.stderr=T))
+  silence <- system( cadenaCompilacion, intern=T, ignore.stderr=T)
   
   # Abriendo la bitácora.
   texOut <- file( texLog, 'r' )

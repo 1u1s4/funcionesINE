@@ -78,7 +78,7 @@ calcularAlto <- function( texto, factor = 0.90, largo = 20 ){
          '-output-directory', texDir, texFile)
   print(cadenaCompilacion)
   suppressWarnings(silence <- system( cadenaCompilacion, intern=T, ignore.stderr=T))
-  
+  Sys.sleep(5)
   # Abriendo la bitácora.
   texOut <- file( texLog, 'r' )
   # Leyendo la bitácora.

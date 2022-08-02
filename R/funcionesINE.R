@@ -1184,7 +1184,7 @@ escribirCSV <- function(lista, ruta){
       pkg.env$quitarNombres <- T
     }
     write.table(x, file.path(ruta, paste( nombres[contador], ".csv", sep = ''
-                                         ) ), col.names= pkg.env$quitarNombres, row.names = F, quote = F, sep = ";" )
+                                         ) ), col.names= pkg.env$quitarNombres, row.names = F, quote = F, sep = ";" , fileEncoding = "UTF-8")
     contador <- contador +1 
   }
 }

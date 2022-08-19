@@ -52,9 +52,9 @@ capitulo1CB <- function(){
 capitulo2CB <- function(){
   trimestral()
   cuatroEtiquetas()
-  print("Este es el capitulo2")
-  print(getListCB()$"2_03")
-  print(getListCB())
+  # print("Este es el capitulo2")
+  # print(getListCB()$"2_03")
+  # print(getListCB())
   
   g<- graficaLinea(getListCB()$"2_01")
   exportarLatex(paste(getPath(),"2_01.tex",sep="/"),g, preambulo = T )

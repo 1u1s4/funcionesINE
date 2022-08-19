@@ -16,7 +16,7 @@ graficaCol <- function(data, color1=pkg.env$color1, ancho = 0.6, ordenar = TRUE,
   data <- data[ordenarNiveles(data, ordenar),]
   data$x <- factor(data$x, levels = data$x)
   levels(data$x) <- gsub("\\\\n", "\n", levels(data$x))
-  print(levels(data$x))
+  # print(levels(data$x))
   
   
   ##Poniendo la escala correspondiente
@@ -37,9 +37,9 @@ graficaCol <- function(data, color1=pkg.env$color1, ancho = 0.6, ordenar = TRUE,
   }else if( numeroCol == 5){
     ancho <- 0.55
   }
-  print(ancho)
-  print(data$x)
-  print(cortarEtiquetas(data$x))
+  # print(ancho)
+  # print(data$x)
+  # print(cortarEtiquetas(data$x))
   grafica <- ggplot2::ggplot(data, ggplot2::aes(x, y))
   grafica <- grafica + 
     ggplot2::geom_bar(stat = 'identity', colour = calcularRampa(data, color1), fill = calcularRampa(data,pkg.env$colorRelleno), width = ancho, position =  "dodge")+
@@ -117,8 +117,8 @@ graficaBar <- function(data, color1=pkg.env$color1, ancho = 0.6, ordenar = TRUE,
 graficaLinea <- function(data, color1 = pkg.env$color1, inicio = -1, ancho = 1.5, precision=1, escala = "normal", rotar = T, final = NA)
 {
   pkg.env$precision <- precision
-  print("El tamaño de la fuente es: ")
-  print(pkg.env$fontSize)
+  # print("El tamaño de la fuente es: ")
+  # print(pkg.env$fontSize)
   ggplot2::theme_set(pkg.env$temaColumnas)
   names(data)<- c("x","y")
   
@@ -139,16 +139,16 @@ graficaLinea <- function(data, color1 = pkg.env$color1, inicio = -1, ancho = 1.5
   if (pkg.env$modalidad == "trimestral" ){
     ancho <- 0.5
   }else if(pkg.env$modalidad =="presentacion"){
-    print('Como presentacion')
+    # print('Como presentacion')
     ancho <- 0.8
   }
-  print("La modalidad es: \n")
-  print(pkg.env$modalidad)
+  # print("La modalidad es: \n")
+  # print(pkg.env$modalidad)
   grafica <- ggplot2::ggplot(data, ggplot2::aes(x,y, group=1))
   grafica <- grafica + ggplot2::geom_line( colour = color1, size = ancho)+
     ggplot2::labs(x=NULL,y=NULL)
   grafica <- etiquetasLineas(grafica, calcularPosiciones(grafica), precision = pkg.env$precision)
-  margenArriba <- pt2mm(calcularAlto(100))
+  margenArriba <- pt2mm(calcularAlto(10))
   ## Rotanto las etiquetas del eje x cuando la modalidad es trimestral
   
   if(pkg.env$modalidad == "trimestral" || rotar == T){
@@ -166,7 +166,7 @@ graficaLinea <- function(data, color1 = pkg.env$color1, inicio = -1, ancho = 1.5
   }
   
   
-  print(paste('El límite es: ', limite))
+  # print(paste('El límite es: ', limite))
   grafica <- grafica + ggplot2::geom_abline(intercept = limite, slope = 0, size = 0.1)
   if(ggplot2::ggplot_build(grafica)$data[[1]]$y[1] > 3)
   {
@@ -252,8 +252,8 @@ graficaDobleLinea <- function(data, ruta, preambulo = F, color1 = pkg.env$color1
     limite <- minimo - 
       0.3*(maximo - minimo)
     limiteFin <- NA
-    print("El límite es: ")
-    print(limite)
+    # print("El límite es: ")
+    # print(limite)
   }else{
     limite <- inicio
     if ( fin == 0){
@@ -296,27 +296,27 @@ graficaDobleLinea <- function(data, ruta, preambulo = F, color1 = pkg.env$color1
   apoyoX <- 0
   separacion <- 0
   caso <- 0
-  print(paste("La longitud de la etiqueta 1 en in es: ", lonEtiqueta1, sep = " "))
-  print(paste("La longitud de la etiqueta 2 en in es: ", lonEtiqueta2, sep = " "))
-  print( paste("La longitud 1 es: ", lonEtiqueta1 + mm2inch(3 - 0.5 * pkg.env$longCuadrado) + mm2inch(pkg.env$longCuadrado), sep = " ")  )
-  print( paste("La longitud 2 es:", lonEtiqueta2 + mm2inch(3 - 0.5 * pkg.env$longCuadrado) + mm2inch(pkg.env$longCuadrado), sep = " ") )
+  # print(paste("La longitud de la etiqueta 1 en in es: ", lonEtiqueta1, sep = " "))
+  # print(paste("La longitud de la etiqueta 2 en in es: ", lonEtiqueta2, sep = " "))
+  # print( paste("La longitud 1 es: ", lonEtiqueta1 + mm2inch(3 - 0.5 * pkg.env$longCuadrado) + mm2inch(pkg.env$longCuadrado), sep = " ")  )
+  # print( paste("La longitud 2 es:", lonEtiqueta2 + mm2inch(3 - 0.5 * pkg.env$longCuadrado) + mm2inch(pkg.env$longCuadrado), sep = " ") )
   if( lonEtiqueta1 + mm2inch( 3 - 0.5 * pkg.env$longCuadrado ) + mm2inch(pkg.env$longCuadrado) < 0.5 * pkg.env$ancho - pkg.env$tol && 
         lonEtiqueta2 + mm2inch( 3 - 0.5 * pkg.env$longCuadrado ) + mm2inch(pkg.env$longCuadrado)  < 0.5 * pkg.env$ancho - pkg.env$tol  )
   {
-    print("CASO 1")
+    # print("CASO 1")
     altoRect <- max(calcularAlto(names(data)[2], largo = inc2mm( pkg.env$ancho ) ), calcularAlto(names(data)[3], largo = inc2mm(pkg.env$ancho) ) )
-    print(altoRect)
+    # print(altoRect)
     caso <- 1
   }else if( 1.10 * (  lonEtiqueta1  + 2 * mm2inch(3 - 0.5 * pkg.env$longCuadrado) + 2 * mm2inch(pkg.env$longCuadrado) + lonEtiqueta2 ) <  pkg.env$ancho - 2 * pkg.env$tol){
-    print("CASO 2")
+    # print("CASO 2")
     altoRect <- max(calcularAlto(names(data)[2], largo = inc2mm( pkg.env$ancho)/0.9 ), calcularAlto(names(data)[3], largo  = inc2mm(pkg.env$ancho)/0.9 ) )
-    print(altoRect)
+    # print(altoRect)
     caso <- 2
   }else {
-    print(paste("No se cumple ninguna de las anteriores: ",  1.10 * (  lonEtiqueta1  + 2 * mm2inch( 3 - 0.5 * pkg.env$longCuadrado ) + 2 * mm2inch(pkg.env$longCuadrado) + lonEtiqueta2 ) , sep = " " ))
-    print("CASO 3")
+    # print(paste("No se cumple ninguna de las anteriores: ",  1.10 * (  lonEtiqueta1  + 2 * mm2inch( 3 - 0.5 * pkg.env$longCuadrado ) + 2 * mm2inch(pkg.env$longCuadrado) + lonEtiqueta2 ) , sep = " " ))
+    # print("CASO 3")
     altoRect <- max(calcularAlto(names(data)[2], largo = 0.5 * pkg.env$ancho - pkg.env$tol - mm2inch(3 - 0.5 * pkg.env$longCuadrado) - mm2inch( pkg.env$longCuadrado ) ), calcularAlto(names(data)[3], largo = 0.5 * pkg.env$ancho - pkg.env$tol - mm2inch(3 - 0.5 * pkg.env$longCuadrado) - mm2inch( pkg.env$longCuadrado ) ) )
-    print(altoRect)
+    # print(altoRect)
     caso <- 3  
   }
   
@@ -326,34 +326,34 @@ graficaDobleLinea <- function(data, ruta, preambulo = F, color1 = pkg.env$color1
   cadenaEtiqueta2 <- ""
   if( caso == 1  )
   {
-    print("CASO 1")
-    print(paste("El punto medio para la primera etiqueta es: ", 0.5 * ( 0.5 * pkg.env$ancho + pkg.env$tol ), sep = " "))
+    # print("CASO 1")
+    # print(paste("El punto medio para la primera etiqueta es: ", 0.5 * ( 0.5 * pkg.env$ancho + pkg.env$tol ), sep = " "))
     apoyoX  <- 0.5 * ( 0.5 * pkg.env$ancho + pkg.env$tol ) -  0.5 * ( lonEtiqueta1  + mm2inch( 3 - 0.5 * pkg.env$longCuadrado ) + mm2inch(pkg.env$longCuadrado ) )
     finEtiqueta1 <- 0.5 * ( 0.5 * pkg.env$ancho + pkg.env$tol ) +  0.5 * (  lonEtiqueta1  + mm2inch( 3 - 0.5 * pkg.env$longCuadrado ) + mm2inch(pkg.env$longCuadrado) )
-    print(paste("El fin de la etiqueta 1 es:" , finEtiqueta1, sep = " "))
+    # print(paste("El fin de la etiqueta 1 es:" , finEtiqueta1, sep = " "))
     separacion <-  ( mm2inch(pkg.env$longCuadrado) + mm2inch( 3 - 0.5 * pkg.env$longCuadrado ) + lonEtiqueta1 )  + ( 0.5 * pkg.env$ancho - finEtiqueta1 )  + 0.5 * ( 0.5 * pkg.env$ancho - pkg.env$tol - (  lonEtiqueta2  + mm2inch( 3 - 0.5 * pkg.env$longCuadrado ) + mm2inch(pkg.env$longCuadrado) )  )  
     cadenaEtiqueta1 <- paste("node [xshift=0.3cm,inner sep=0pt, outer sep=0pt,midway,right,scale = 1]{", as.character( names(data)[2] ),"};", sep = "")
     cadenaEtiqueta2 <- paste("node [xshift=0.3cm,inner sep=0pt, outer sep=0pt,midway,right,scale = 1]{", as.character( names(data)[3] ),"};", sep = "")
   }else if( caso == 2 ){
-    print("CASO 2")
+    # print("CASO 2")
     apoyoX <- ( 0.5 * pkg.env$ancho  + pkg.env$tol ) - 0.5 * 1.10 * ( lonEtiqueta1 + 2 * mm2inch(3 - 0.5 * pkg.env$longCuadrado ) + 2 * mm2inch(pkg.env$longCuadrado) + lonEtiqueta2 )
     separacion <-  mm2inch(pkg.env$longCuadrado) + mm2inch( 3 - 0.5 * pkg.env$longCuadrado )  + lonEtiqueta1   + 0.10 * ( lonEtiqueta1 + 2 * mm2inch( 3 - 0.5 * pkg.env$longCuadrado ) + 2 * mm2inch(pkg.env$longCuadrado) + lonEtiqueta2 ) 
     cadenaEtiqueta1 <- paste("node [xshift=0.3cm,inner sep=0pt, outer sep=0pt,midway,right,scale = 1, draw]{", as.character( names(data)[2] ),"};", sep = "")
     cadenaEtiqueta2 <- paste("node [xshift=0.3cm,inner sep=0pt, outer sep=0pt,midway,right,scale = 1]{", as.character( names(data)[3] ),"};", sep = "")
   }else {
-    print("CASO 3")
-    print(paste("El punto medio para la primera etiqueta es: ", 0.5 * ( 0.5 * pkg.env$ancho + pkg.env$tol ), sep = " "))
+    # print("CASO 3")
+    # print(paste("El punto medio para la primera etiqueta es: ", 0.5 * ( 0.5 * pkg.env$ancho + pkg.env$tol ), sep = " "))
     apoyoX  <- 0.5 * ( 0.5 * pkg.env$ancho + pkg.env$tol ) -  0.5 * ( lonEtiqueta1  + mm2inch(3) + mm2inch(pkg.env$longCuadrado) )
     finEtiqueta1 <- 0.5 * ( 0.5 * pkg.env$ancho + pkg.env$tol ) +  0.5 * (  lonEtiqueta1  + mm2inch(3) + mm2inch(pkg.env$longCuadrado) )
-    print(paste("El fin de la etiqueta 1 es:" , finEtiqueta1, sep = " "))
+    # print(paste("El fin de la etiqueta 1 es:" , finEtiqueta1, sep = " "))
     separacion <- finEtiqueta1  + 0.5 * ( 0.5 * pkg.env$ancho - pkg.env$tol - (  lonEtiqueta2  + mm2inch(3) + mm2inch(pkg.env$longCuadrado) )  )
   }
   
   
-  print(paste("El valor de apoyo es:" , apoyoX, sep = " "))
-  print(paste("La separción es:" , separacion, sep = " "))
-  print(paste("La tolerancia es:" , pkg.env$tol, sep = " "))
-  print(paste("La distancia de un cuadro a otro es:" ,separacion + lonEtiqueta1, sep = " "))
+  # print(paste("El valor de apoyo es:" , apoyoX, sep = " "))
+  # print(paste("La separción es:" , separacion, sep = " "))
+  # print(paste("La tolerancia es:" , pkg.env$tol, sep = " "))
+  # print(paste("La distancia de un cuadro a otro es:" ,separacion + lonEtiqueta1, sep = " "))
   tikzDevice::tikzCoord(apoyoX, pkg.env$alto-mm2inch(pt2mm(altoRect)), name= "apoyo", units = "inches") ## ESTA ES LA QUE FUNCIONA 
   tikzDevice::tikzCoord(mm2inch(pkg.env$longCuadrado),mm2inch(pt2mm(altoRect)), name = "longitudFicticia", units= "inches")
   tikzDevice::tikzCoord(mm2inch(pkg.env$longCuadrado),mm2inch(pkg.env$longCuadrado), name = "longitud", units= "inches")
@@ -441,7 +441,7 @@ piramidePoblacional <- function(data,ancho = 0.6 , escala = "normal", color1 = p
   
   
   
-  print(data)
+  # print(data)
   
   ggplot2::theme_set(pkg.env$temaBarras)
 
@@ -456,19 +456,19 @@ piramidePoblacional <- function(data,ancho = 0.6 , escala = "normal", color1 = p
   }else if( numeroCol == 5){
     ancho <- 0.55
   }
-  print(ancho)
+  # print(ancho)
   
 
   etiquetaMaxima <- tikzDevice::getLatexStrWidth(max(data$x))
   etiquetaMaxima <- pt2mm(etiquetaMaxima)
-  print(c("La etiqueta maxima mide ",  etiquetaMaxima))
+  # print(c("La etiqueta maxima mide ",  etiquetaMaxima))
   pkg.env$enteros <- sonEnteros( data )
   pkg.env$digitos <- digitos
   
   
   data$x <- factor(data$x, levels = data$x)
   levels(data$x) <- gsub("\\\\n", "\n", levels(data$x))
-  print(levels(data$x))  
+  # print(levels(data$x))  
   
   
   if ( pkg.env$modalidad == "trimestral"){
@@ -481,17 +481,17 @@ piramidePoblacional <- function(data,ancho = 0.6 , escala = "normal", color1 = p
   }
   
   
-  print(data$z)
+  # print(data$z)
   maximo1 <- max( data$z )
-  print(data$y)
+  # print(data$y)
   maximo2 <- max( data$y )
   maximo <- max(c(maximo1, maximo2))
-  print(c("El maximo para la escala es: ", maximo))
+  # print(c("El maximo para la escala es: ", maximo))
   
-  print(c("El maximo en z es: ", maximo1))
+  # print(c("El maximo en z es: ", maximo1))
   longitudy <- tikzDevice::getLatexStrWidth(trimws( formatC(maximo2,format = "f",big.mark = ",", digits = pkg.env$digitos, drop0trailing = pkg.env$enteros) ), cex = pkg.env$fEscala)  
   longitudy <- pt2mm(longitudy) + 2
-  print(longitudy)
+  # print(longitudy)
   grafica <- ggplot2::ggplot(data, ggplot2::aes(x,z,y))
   grafica.y <- grafica +    
     ggplot2::geom_bar(ggplot2::aes(x,y = z), stat = 'identity',fill = calcularRampa(data, pkg.env$colorRelleno), colour = calcularRampa(data, pkg.env$color1), width = ancho, position =  "dodge")+
@@ -510,7 +510,7 @@ piramidePoblacional <- function(data,ancho = 0.6 , escala = "normal", color1 = p
     )+
     ggplot2::coord_flip()+ggplot2::ggtitle("Hombres")
   
-  print(grafica.y)
+  # print(grafica.y)
   
   tempy<- ggplot2::ggplot_gtable(ggplot2::ggplot_build(grafica.y))
   tempy$layout$clip[tempy$layout$name=="panel"] <- "off"
@@ -518,7 +518,7 @@ piramidePoblacional <- function(data,ancho = 0.6 , escala = "normal", color1 = p
   
   
   
-  print(c("El maximo en y es: ", maximo2))
+  # print(c("El maximo en y es: ", maximo2))
   longitud <- tikzDevice::getLatexStrWidth(formatC(maximo2,format = "f",big.mark = ",", digits = pkg.env$digitos, drop0trailing = pkg.env$enteros), cex = pkg.env$fEscala) 
   longitud <- pt2mm(longitud) + 3
   
@@ -541,7 +541,7 @@ piramidePoblacional <- function(data,ancho = 0.6 , escala = "normal", color1 = p
     ggplot2::coord_flip()+ ggplot2::ggtitle("Mujeres")
   
   
-  print(grafica.x)
+  # print(grafica.x)
   tempx<- ggplot2::ggplot_gtable(ggplot2::ggplot_build(grafica.x))
   tempx$layout$clip[tempx$layout$name=="panel"] <- "off"
   

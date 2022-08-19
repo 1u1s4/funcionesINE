@@ -160,7 +160,7 @@ calcularPosiciones <- function(graph) {
   #0.5 A LA DERECHA
   #-0.5 A LA IZQUIERDA
   data <- ggplot2::ggplot_build(graph)$data[[1]]
-  print(data)
+  # print(data)
   posiciones <- NULL
   if (data$y[[1]] < data$y[[2]]){
     posiciones <- c(posiciones, -1)
@@ -197,8 +197,8 @@ calcularPosiciones <- function(graph) {
   } else {
     posiciones <- c(posiciones, 1)
   }
-  print("Las etiquetas son: ")
-  print( posiciones )
+  # print("Las etiquetas son: ")
+  # print( posiciones )
   return(posiciones)
 }
 
@@ -289,8 +289,8 @@ calcularPosicionesDobles <- function(graph) {
   } else {
     posiciones2 <- c(posiciones2, 1)
   }
-  print("Las etiquetas son: ")
-  print(list(posiciones, posiciones2))
+  # print("Las etiquetas son: ")
+  # print(list(posiciones, posiciones2))
   return(list(posiciones, posiciones2))
 }
 
@@ -305,7 +305,7 @@ etiquetasLineas <- function(graph, posiciones, precision = 1) {
   d <- ggplot2::ggplot_build(graph)$data[[1]]
   enteros <- sonEnteros(d)
   if (pkg.env$maxMin == T) {
-    print("La función de cuatro etiquetas está activada")
+    # print("La función de cuatro etiquetas está activada")
     lista <- NULL
     lista <- c(lista,max(d$y), min(d$y))
     if(!(d$y[[1]] %in% lista)) {
@@ -314,28 +314,28 @@ etiquetasLineas <- function(graph, posiciones, precision = 1) {
     if(!(d$y[[length(posiciones)]] %in% lista)) {
       lista <- c(lista, d$y[[length(posiciones)]])
     }
-    print(c("La lista inicial es: ", lista))
+    # print(c("La lista inicial es: ", lista))
   }
   for (i in 1:length(posiciones)) {
     dato <- d$y[[i]]
-    print(c("El dato correspondiente a la posición i es: ", i, " con valor ", dato, " mientras que la longitud de la posicion es: ", length(posiciones)))
+    # print(c("El dato correspondiente a la posición i es: ", i, " con valor ", dato, " mientras que la longitud de la posicion es: ", length(posiciones)))
     if (pkg.env$maxMin == T) { 
       if(!(dato %in% lista)) {
         dato <- NA
       } else if ((dato == d$y[[length(posiciones)]] && i != length(posiciones))) {
         if(!( i == 1 && dato == d$y[[1]])) {
-          print("Etiqueta en riesgo")
+          # print("Etiqueta en riesgo")
           dato <- NA
         }
       } else {
           lista <- lista[lista != dato] 
         }
-      print("La lista es ")
-      print(lista)
+      # print("La lista es ")
+      # print(lista)
     }
     d$etiqueta <- formatC(as.numeric(completarEtiquetas(dato,i,tam = length(d$x))), format = 'f', big.mark = ',', digits = pkg.env$precision, drop0trailing = enteros)
-    print("#####LAS ETIQUETAS SON ##########" )
-    print(d$etiqueta)
+    # print("#####LAS ETIQUETAS SON ##########" )
+    # print(d$etiqueta)
     if (posiciones[[i]] == 1) {
       graph <- graph + ggplot2::geom_text(data = d, ggplot2::aes(label=ifelse(stringr::str_trim(etiqueta) == "NA" ,"",etiqueta),family=pkg.env$fuente),size=pkg.env$sizeText,hjust = 0.5, vjust = -0.5)
     } else if (posiciones[[i]] == -1) {
@@ -358,7 +358,7 @@ etiquetasLineas <- function(graph, posiciones, precision = 1) {
 #'@return Gráfica con las etiquetas puestasw
 #'@export
 etiquetasLineasDobles <- function(graph, pos, precision=  1) {
-  print(c('La precision es: ', precision ))
+  # print(c('La precision es: ', precision ))
   pkg.env$precision <- precision
   d1 <- ggplot2::ggplot_build(graph)$data[[1]]
   d2 <- ggplot2::ggplot_build(graph)$data[[2]]
@@ -456,7 +456,7 @@ etiquetasBarras <- function(graph, margenIz = 0, precision = 1, cambiarNegativas
   data <- ggplot2::ggplot_build(graph)$data[[1]]
   if (nrow(subset(data, y < 0)) > 0) {
     min <- min(data$y)
-    print(c("El mínimo es: ", min))
+    # print(c("El mínimo es: ", min))
     espacio <- tikzDevice::getLatexStrWidth(formatC(min, format = "f", big.mark = ",", digits = pkg.env$precision), cex = pkg.env$fEscala)
     espacio <- pt2mm(espacio) + 3 
   } else {
@@ -466,12 +466,12 @@ etiquetasBarras <- function(graph, margenIz = 0, precision = 1, cambiarNegativas
   max <-max(ggplot2::ggplot_build(graph)$data[[1]]$y)
   min <-min(ggplot2::ggplot_build(graph)$data[[1]]$y)
   longitud <- tikzDevice::getLatexStrWidth(formatC(max, format = "f", big.mark = ",", digits = pkg.env$precision), cex = pkg.env$fEscala)
-  print(paste("El valor de longitud antes de conversion es ", longitud, max))
+  # print(paste("El valor de longitud antes de conversion es ", longitud, max))
   longitud <- longitud * 0.352777778 + 2.3
   longitudInferior <- tikzDevice::getLatexStrWidth(formatC(min, format = "f", big.mark = ",", digits = pkg.env$precision), cex = pkg.env$fEscala)
   longitudInferior <- longitudInferior * 0.352777778 + 2.3
   mIz <- 0 + margenIz
-  print(paste("El valor de longitud es", longitud))
+  # print(paste("El valor de longitud es", longitud))
   if (sonEnteros(ggplot2::ggplot_build(graph)$data[[1]]) == 0) {
     pkg.env$botarCeros <- T
   } else {
@@ -498,8 +498,8 @@ etiquetasBarras2 <- function(graph, margenIz = 0, precision = 1, cambiarNegativa
   posiciones <- NULL
   posiciones <- posicionesBarras(ggplot2::ggplot_build((graph))$data[[1]]$y)
   data <- ggplot2::ggplot_build(graph)$data[[1]]
-  print(names(data))
-  print(data)
+  # print(names(data))
+  # print(data)
   if (sonEnteros(ggplot2::ggplot_build(graph)$data[[1]]) == 0) {
     pkg.env$botarCeros <- T
   } else {
@@ -513,8 +513,8 @@ etiquetasBarras2 <- function(graph, margenIz = 0, precision = 1, cambiarNegativa
       dato <- d$y[[i]]
     }
     d$etiqueta <- formatC(as.numeric(completarEtiquetas(dato,i,tam = length(d$x))), format = 'f', big.mark = ',', digits = pkg.env$precision, drop0trailing = !pkg.env$botarCeros)
-    print("#####LAS ETIQUETAS SON ##########" )
-    print(d$etiqueta)
+    # print("#####LAS ETIQUETAS SON ##########" )
+    # print(d$etiqueta)
     if (posiciones[[i]] == 1) {
       graph <- graph + ggplot2::geom_text(data = d, ggplot2::aes(label=ifelse(stringr::str_trim(etiqueta)  == 'NA' ,"",etiqueta),family=pkg.env$fuente),size=pkg.env$sizeText,hjust = "outward", vjust = "outward")
     } else if (posiciones[[i]] == -1) {
@@ -548,15 +548,15 @@ etiquetasHorizontales <- function(graph, precision = 1, cambiarNegativas = F) {
   posiciones <- NULL
   posiciones <- posicionesBarras(ggplot2::ggplot_build((graph))$data[[1]]$y)
   data <- ggplot2::ggplot_build(graph)$data[[1]]
-  print(names(data))
-  print(data)
+  # print(names(data))
+  # print(data)
   if (nrow(subset(data, y < 0)) > 0) {
     min <- min(data$y)
     espacio <- 4.5
   } else {
     espacio <- 0
   }
-  print(c("El valor de espacio es: ", espacio))
+  # print(c("El valor de espacio es: ", espacio))
   longitudIzquierda <- 0
   max <-ggplot2::ggplot_build(graph)$panel$ranges[[1]]$x.range[2]
   min <-ggplot2::ggplot_build(graph)$panel$ranges[[1]]$x.range[1]
@@ -577,8 +577,8 @@ etiquetasHorizontales <- function(graph, precision = 1, cambiarNegativas = F) {
       dato <- d$y[[i]]
     }
     d$etiqueta <- formatC(as.numeric(completarEtiquetas(dato, i, tam = length(d$x))), format = 'f', big.mark = ',', digits = pkg.env$precision, drop0trailing = !pkg.env$botarCeros)
-    print("#####LAS ETIQUETAS SON ##########" )
-    print(d$etiqueta)
+    # print("#####LAS ETIQUETAS SON ##########" )
+    # print(d$etiqueta)
     top <- 6
     if (posiciones[[i]] == 1) {
       graph <- graph + ggplot2::geom_text(data = d, ggplot2::aes(label=ifelse(stringr::str_trim(etiqueta)  == 'NA', "", etiqueta), family=pkg.env$fuente), size=pkg.env$sizeText, hjust = 0.5, vjust = -0.5)
@@ -683,13 +683,13 @@ retocarGrafica <- function(graph) {
 
 calcularRampaAnillo <- function(x, categoria = TRUE) {
   rampa = NULL
-  print( pkg.env$modalidad )
+  # print( pkg.env$modalidad )
   if (pkg.env$modalidad == "trimestral") {
     pkg.env$color1 <- rgb(1, 1, 1)
   }
   if (categoria == TRUE) {
     if ("IGNORADO" %in% toupper(x)) {
-      #print("IGNORADO")
+      ## print("IGNORADO")
       rampa = c(pkg.env$color1, pkg.env$color2, pkg.env$gris)
     } else {
       rampa = c(pkg.env$color1, pkg.env$color2)
@@ -715,7 +715,7 @@ calcularRampaAnillo <- function(x, categoria = TRUE) {
 #'@export  
 fact2Num <- function(tabla) {
   if (length(names(tabla)) > 1) {
-    print(tabla)
+    # print(tabla)
     nombres <- names(tabla)
     names(tabla) <- c("x", "y")
     tabla$y <- as.numeric(gsub(",", "", tabla$y))
@@ -735,10 +735,10 @@ fact2Num <- function(tabla) {
 #'@return Data frame recodificado
 #'
 cambiarCodificacion <- function(tabla) {
-  print(length(names(tabla)))
+  # print(length(names(tabla)))
   if (length( names(tabla)) > 1) {
-    print('Entre al if')
-    print(names(tabla))
+    # print('Entre al if')
+    # print(names(tabla))
     nombres <- names(tabla)
       nombres[1] <- "x"
     if (nombres[2] == "Y")
@@ -760,16 +760,16 @@ cambiarCodificacion <- function(tabla) {
 #'@export
 compilar <- function(ruta = "", mostrar = T) {
   if (.Platform$OS.type == "windows") {
-    print(paste("C: && cd", dirname(ruta), "&&xelatex  --synctex=1 --interaction=nonstopmode",ruta), mustWork=TRUE, intern=TRUE, translate=TRUE)
+    # print(paste("C: && cd", dirname(ruta), "&&xelatex  --synctex=1 --interaction=nonstopmode",ruta), mustWork=TRUE, intern=TRUE, translate=TRUE)
     shell(cmd=paste("C: && cd", dirname(ruta), "&&xelatex  --synctex=1 --interaction=nonstopmode",ruta), mustWork=TRUE, intern=TRUE, translate=TRUE)  
   } else {
   cadenaCompilacion <-  paste("cd", dirname(ruta), "&&xelatex  --synctex=1 --interaction=nonstopmode",ruta)
-  print(cadenaCompilacion)
+  # print(cadenaCompilacion)
   suppressWarnings(silence <- system( cadenaCompilacion, intern=T, ignore.stderr=T))
   }
   if (mostrar == T) {
     if (.Platform$OS.type == "windows") {
-    print(paste0('start ',paste(dirname(ruta), gsub(".tex",".pdf",basename(ruta)), sep="/")))
+    # print(paste0('start ',paste(dirname(ruta), gsub(".tex",".pdf",basename(ruta)), sep="/")))
     system(paste0('cmd.exe /c start ',paste(dirname(ruta), gsub(".tex",".pdf",basename(ruta)), sep="/")), intern = T, ignore.stderr = T) 
     } else {
      system(paste(dirname(ruta), gsub(".tex",".pdf",basename(ruta)), sep="/"), intern = T, ignore.stderr = T) 
@@ -786,7 +786,7 @@ pdfcrop <- function(ruta = "") {
     shell(cmd=paste("cd", dirname(ruta), "&& pdfcrop ",gsub(".tex",".pdf",basename(ruta))), mustWork=TRUE, intern=TRUE, translate=TRUE)  
   } else {
     cadenaCompilacion <-  paste("cd", dirname(ruta), "&& pdfcrop",gsub(".tex",".pdf",basename(ruta)), gsub(".tex",".pdf",basename(ruta)))
-    print(cadenaCompilacion)
+    # print(cadenaCompilacion)
     suppressWarnings(silence <- system( cadenaCompilacion, intern=T, ignore.stderr=T))
   }
 }
@@ -813,28 +813,28 @@ rampaColAgrupadas <- function(data) {
   rampa = NULL
   rampa1 = NULL
   if (nrow(subset(data, y > 0)) > 0) {
-    print("No hay valores negativos")
+    # print("No hay valores negativos")
     if (toupper("Ignorado") %in% toupper(data$categoria)) {
-      print("Hay ignorados")
+      # print("Hay ignorados")
       if (pkg.env$modalidad == "trimestral") {
         rampa = c(grDevices::rgb(1, 1, 1), grDevices::rgb(0.5, 0.5, 0.5), pkg.env$gris)
         rampa1 = c(grDevices::rgb(0, 0, 0), grDevices::rgb(0.5, 0.5, 0.5), pkg.env$gris)
       }
     } else {
-      print("No hay ignorados")
+      # print("No hay ignorados")
       if (pkg.env$modalidad == "trimestral") {
-        print("La modalidad es trimestral")
+        # print("La modalidad es trimestral")
         rampaAux = grDevices::colorRampPalette(c(grDevices::rgb(1, 1, 1), grDevices::rgb(0.5, 0.5, 0.5)))
         rampaAux1 <- grDevices::colorRampPalette(c(grDevices::rgb(0, 0, 0), grDevices::rgb(0.5, 0.5, 0.5)))
         rampa = rampaAux(length(levels(data$categoria)))
         rampa1 = rampaAux1(length(levels(data$categoria)))  
       } else if (pkg.env$modalidad == "anual" || pkg.env$modalidad == "presentacion") {
-        print("Es anual o presentacion")
+        # print("Es anual o presentacion")
         rampaAux = grDevices::colorRampPalette(c(pkg.env$color1, pkg.env$color2))
         rampaAux1 <- rampaAux
         if (length(levels(data$categoria)) == 3 ) {
-          print("Hay 3 categorias")
-          print(levels(data$categoria))
+          # print("Hay 3 categorias")
+          # print(levels(data$categoria))
           rampa = c(rampaAux(2), pkg.env$gris)
           rampa1 = c(rampaAux(2), pkg.env$gris)
         } else {
@@ -844,7 +844,7 @@ rampaColAgrupadas <- function(data) {
       }
     }
   } else {
-    print("Hay valores negativos")
+    # print("Hay valores negativos")
     rampaAux = grDevices::colorRampPalette(c(grDevices::rgb(0.2, 0.2, 0.2), grDevices::rgb(0.4, 0.4, 0.4)))
     rampa = rampaAux(2)
     rampa = c(rampa, pkg.env$gris)
@@ -866,13 +866,13 @@ cargaMasiva <- function (ruta, codificacion = 'iso') {
   dir <- ruta
   pkg.env$cod = ''
   if (toupper(codificacion) == 'ISO') {
-    print("Estas usando codificacion Windows")
+    # print("Estas usando codificacion Windows")
     pkg.env$cod = 'iso-8859-1'  
   } else if ( toupper(codificacion) == 'UTF8') {
-    print('Estas usando codificacion linux')
+    # print('Estas usando codificacion linux')
     pkg.env$cod = 'utf-8'
   }
-  print(pkg.env$cod)
+  # print(pkg.env$cod)
   filenames <- list.files(path = dir, pattern = ".csv", full.names = TRUE)
   All <- lapply(filenames, function(i) {
     #iso-8859-1
@@ -979,13 +979,13 @@ presentacion <- function(){
 
 #'Funcion para activar las cuatro etiquetas, maximo y minimo.
 cuatroEtiquetas <- function(encendido = TRUE){
-  print(c("El valor de encendido es: ", encendido))
+  # print(c("El valor de encendido es: ", encendido))
   if (encendido == T){
-    print("maxMin activado")
+    # print("maxMin activado")
     pkg.env$maxMin <- T
   }
   else{
-    print("maxMin desactivado")
+    # print("maxMin desactivado")
     pkg.env$maxMin <- F
   }
 }
@@ -1030,14 +1030,14 @@ leerLibro <- function (ruta, codificacion = 'iso') {
     }else{
       pkg.env$header = T
     }
-    print(c("El nombre es: ", nombres[contador], " y el booleano dio " , pkg.env$header))
+    # print(c("El nombre es: ", nombres[contador], " y el booleano dio " , pkg.env$header))
     data <- xlsx::read.xlsx2(ruta, sheetName = nombres[contador], as.data.frame = T, header = pkg.env$header, check.names = F, stringsAsFactors = F)
-    print(data)
+    # print(data)
     temp <- data[-which(data[1] == ""),]
     if ( nrow(temp) != 0){
       data <- temp
     }
-    print(data)
+    # print(data)
     lista[[contador]] <- data
     contador = contador +1 
   }
@@ -1080,12 +1080,12 @@ convertirFechas <- function (lista) {  nombres <- names(lista)
   contador <-1
   lis <- list()
   for ( x in lista ){
-    print(is.na(as.numeric(substring(nombres[contador],1,1))) )
+    # print(is.na(as.numeric(substring(nombres[contador],1,1))) )
     if (  is.na(as.numeric(substring(nombres[contador],1,1))) == TRUE ){
       if(as.numeric( substring(nombres[contador],nchar(nombres[contador]), nchar(nombres[contador]) ) ) %% 2 == 0 ){
           name <- format(as.Date(as.numeric(x$'1'[c(1,2,3,4,5,6,7,8,9,10,11,12,13)]), origin="1899-12-30", format = "%Y-%m-%d"), "%B/%Y" )
           x$'1'[c(1,2,3,4,5,6,7,8,9,10,11,12,13)]  <- paste0(toupper(substr(name, 1, 1)), substr(name, 2, nchar(name)))
-          print(x)
+          # print(x)
           }
     }
     lis[[contador]] <- x
@@ -1103,9 +1103,9 @@ convertirFechasIPC <- function (lista) {  nombres <- names(lista)
 contador <-1
 lis <- list()
 for ( x in lista ){
-  print(x[1][[1]])
+  # print(x[1][[1]])
   if( is.na( as.numeric(x[1][[1]]) ) == FALSE && is.na(as.numeric(substring(nombres[contador],1,1))) == FALSE ){
-    print("Entre al if")
+    # print("Entre al if")
     name  <- format(as.Date(as.numeric(x[1][[1]]), origin="1899-12-30", format = "%Y-%m-%d"), "%b-%Y" )  
     x[1][[1]] <- paste0(toupper(substr(name, 1, 1)), substr(name, 2, nchar(name)))
     }
@@ -1125,13 +1125,13 @@ convertirFechasTransporte <- function (lista) {  nombres <- names(lista)
 contador <-1
 lis <- list()
 for ( x in lista ){
-  print(substring(nombres[contador],1,1))
-  print( c( "El numero mágico es: " , substring(nombres[contador],nchar(nombres[contador])-1, nchar(nombres[contador]) )  ) )
-  print( is.na(as.numeric(substring(nombres[contador],1,1) ) ) )
+  # print(substring(nombres[contador],1,1))
+  # print( c( "El numero mágico es: " , substring(nombres[contador],nchar(nombres[contador])-1, nchar(nombres[contador]) )  ) )
+  # print( is.na(as.numeric(substring(nombres[contador],1,1) ) ) )
   if (  is.na(as.numeric(substring(nombres[contador],1,1))) == TRUE ){
-    print( c("Antes de entrar al segundo if: ", substring(nombres[contador],nchar(nombres[contador])-1, nchar(nombres[contador]) ) %in% list("03","06","08","09","10","11","12","13","14","15") ) )
+    # print( c("Antes de entrar al segundo if: ", substring(nombres[contador],nchar(nombres[contador])-1, nchar(nombres[contador]) ) %in% list("03","06","08","09","10","11","12","13","14","15") ) )
     if( substring(nombres[contador],nchar(nombres[contador])-1, nchar(nombres[contador]) ) %in% list("03","06","08","09","10","11","12","13","14","15")  ){
-      print(c("Entre al if con: ",substring(nombres[contador],nchar(nombres[contador])-1, nchar(nombres[contador]) )  ))
+      # print(c("Entre al if con: ",substring(nombres[contador],nchar(nombres[contador])-1, nchar(nombres[contador]) )  ))
       name <- format(as.Date(as.numeric(x$'1'[c(1,2,3,4,5,6,7,8,9,10,11,12,13)]), origin="1899-12-30", format = "%Y-%m-%d"), "%B/%Y" )
       x$'1'[c(1,2,3,4,5,6,7,8,9,10,11,12,13)]  <- paste0(toupper(substr(name, 1, 1)), substr(name, 2, nchar(name)))
       #print(x)
@@ -1150,11 +1150,11 @@ convertirFechasTodos <- function (lista) {
   contador <- 1
   lis <- list()
   for (x in lista){
-    print(is.na(as.numeric(substring(nombres[contador],1,1))) )
+    # print(is.na(as.numeric(substring(nombres[contador],1,1))) )
     if (is.na(as.numeric(substring(nombres[contador],1,1))) == TRUE){
-      print( format(as.Date(as.numeric(x$'1'[c(1,2,3,4,5,6,7,8,9,10,11,12,13)]), origin="1899-12-30", format = "%Y-%m-%d"), "%b/%Y" ) )
+      # print( format(as.Date(as.numeric(x$'1'[c(1,2,3,4,5,6,7,8,9,10,11,12,13)]), origin="1899-12-30", format = "%Y-%m-%d"), "%b/%Y" ) )
       x$'1'[c(1,2,3,4,5,6,7,8,9,10,11,12,13)]  <- format(as.Date(as.numeric(x$'1'[c(1,2,3,4,5,6,7,8,9,10,11,12,13)]), origin="1899-12-30", format = "%Y-%m-%d"), "%B/%Y" )
-      print(x)
+      # print(x)
     }
     lis[[contador]] <- x
     contador <- contador +1 
@@ -1171,16 +1171,16 @@ convertirFechasTodos <- function (lista) {
 
 escribirCSV <- function(lista, ruta){
   nombres <- names(lista)
-  print(nombres)
+  # print(nombres)
   contador <- 1
   for(x in lista){
-    print( file.path(ruta, paste( nombres[contador], ".csv", sep = '' ) ) )
-    print( nombres[contador] )
+    # print( file.path(ruta, paste( nombres[contador], ".csv", sep = '' ) ) )
+    # print( nombres[contador] )
     if( is.na(as.numeric(names(x)))[1] == F  ){
       pkg.env$quitarNombres <- F
-      print(c(nombres[contador],"Quitando los numeros"))
+      # print(c(nombres[contador],"Quitando los numeros"))
     }else{
-      print(c(nombres[contador],"Si tiene encabezado"))
+      # print(c(nombres[contador],"Si tiene encabezado"))
       pkg.env$quitarNombres <- T
     }
     write.table(x, file.path(ruta, paste( nombres[contador], ".csv", sep = ''
@@ -1201,16 +1201,16 @@ escribirCSV <- function(lista, ruta){
 #' @examples
 cortarEtiquetas <- function(etiquetas){
   temp <- ""
-  print(paste("Las etiquetas son:", etiquetas))
+  # print(paste("Las etiquetas son:", etiquetas))
   etiquetas <- as.character(etiquetas)
-  print(paste("Despues como caracter son:", etiquetas))
+  # print(paste("Despues como caracter son:", etiquetas))
   for( i in 1:length(etiquetas) ){
     temp <- ""
     for(x in strwrap(etiquetas[i], width = 15)){
       temp <- paste( temp, x, sep = "\n" )
     }
     etiquetas[i] <- substring(temp, first = 2)
-    print(etiquetas)
+    # print(etiquetas)
   }
   return(etiquetas)
 }

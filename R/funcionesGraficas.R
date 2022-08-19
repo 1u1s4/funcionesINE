@@ -148,7 +148,7 @@ graficaLinea <- function(data, color1 = pkg.env$color1, inicio = -1, ancho = 1.5
   grafica <- grafica + ggplot2::geom_line( colour = color1, size = ancho)+
     ggplot2::labs(x=NULL,y=NULL)
   grafica <- etiquetasLineas(grafica, calcularPosiciones(grafica), precision = pkg.env$precision)
-  margenArriba <- pt2mm(calcularAlto(10))
+  margenArriba <- pt2mm(calcularAlto(100))
   ## Rotanto las etiquetas del eje x cuando la modalidad es trimestral
   
   if(pkg.env$modalidad == "trimestral" || rotar == T){

@@ -7,10 +7,10 @@
 #'@export
 
 calcularAlto <- function(texto, factor=0.90, largo=20){
-  print(getwd())
   ##Preparando el archivo tex que se usará para calcular 
   ##el alto del texto
-  texDir <- tempdir()
+  dir.create("Temp")
+  texDir <- paste(getwd(),"Temp", sep="/")
   texLog <- normalizePath(file.path(texDir, 'calculoAltura.log'), '/', FALSE)
   texFile <- normalizePath(file.path(texDir, 'calculoAltura.tex'), '/', FALSE)
   ## Creando los archivos
@@ -63,4 +63,3 @@ calcularAlto <- function(texto, factor=0.90, largo=20){
   heigth <- gsub('[=A-Za-z]','',match)
   return(as.numeric(heigth))
 }
-

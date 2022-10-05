@@ -34,7 +34,9 @@ crearDiccionarioPalabras <- function(){
     rutaPadre = "~/Dictionary"
   }else{
     usuario = Sys.getenv("USERNAME")
-    rutaPadre = paste0("C:/Users/", usuario)
+    dir.create("Dictionary")
+    rutaPadre <- paste(getwd(),"Dictionary", sep="/")
+    #rutaPadre = paste0("C:/Users/", usuario)
   }
   
   rutaDiccionario = "diccionarioAcortador"  

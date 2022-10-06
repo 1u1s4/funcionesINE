@@ -6,18 +6,18 @@
 #'@return Alto del cuadro que enmarca al texto ingresado. Este valor es devuelto en puntos.
 #'@export
 
-calcularAlto <- function(texto, factor=0.90, largo=20){
-  ##Preparando el archivo tex que se usará para calcular 
+calcularAlto <- function(texto, factor = 0.90, largo = 20) {
+  ##Preparando el archivo tex que se usará para calcular
   ##el alto del texto
   dir.create("Temp")
-  texDir <- paste(getwd(),"Temp", sep="/")
-  texLog <- normalizePath(file.path(texDir, 'calculoAltura.log'), '/', FALSE)
-  texFile <- normalizePath(file.path(texDir, 'calculoAltura.tex'), '/', FALSE)
+  texDir <- paste(getwd(), "Temp", sep = "/")
+  texLog <- normalizePath(file.path(texDir, "calculoAltura.log"), "/", FALSE)
+  texFile <- normalizePath(file.path(texDir, "calculoAltura.tex"), "/", FALSE)
   ## Creando los archivos
   ##file.create(texLog)
   ##file.create(texFile)
   # Abrir el texto con permisos de escritura.
-  texIn <- file(texFile, 'w')
+  texIn <- file(texFile, "w")
   # Escritura del preámbulo para el archivo LaTeX
   writeLines(getOption("tikzDocumentDeclaration"), texIn)
   writeLines("\\usepackage[T1]{fontenc}", texIn)
@@ -47,19 +47,19 @@ calcularAlto <- function(texto, factor=0.90, largo=20){
   writeLines("\\end{document}", texIn)
   close(texIn)
   ## Compilación con XeLaTeX
-  cadenaCompilacion <-  paste("xelatex", '-interaction=batchmode -halt-on-error --enable-write18 -output-directory', texDir, texFile)
+  cadenaCompilacion <-  paste("xelatex", "-interaction=batchmode -halt-on-error --enable-write18 -output-directory", texDir, texFile)
   # print(cadenaCompilacion)
   suppressWarnings(silence <- system( cadenaCompilacion, intern=TRUE, ignore.stderr=TRUE))
   # Abriendo la bitácora.
-  texOut <- file( texLog, 'r' )
+  texOut <- file(texLog, "r")
   # Leyendo la bitácora.
-  logContents <- readLines( texOut )
-  close( texOut )
+  logContents <- readLines(texOut)
+  close(texOut)
   # Recover width by finding the line containing
   # tikzTeXWidth in the logfile.
-  match <- logContents[ grep('tikzTeXWidth=', logContents) ]
+  match <- logContents[grep("tikzTeXWidth=", logContents)]
   # Remove all parts of the string besides the
   # number.
-  heigth <- gsub('[=A-Za-z]','',match)
+  heigth <- gsub("[=A-Za-z]", "", match)
   return(as.numeric(heigth))
 }

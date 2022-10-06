@@ -6,58 +6,39 @@
 #' @param ordenar Booleano que indica si los datos deben ser ordenados
 #' @param escala Indica la escala en la cual debe estar el eje y de la grafica. Por defecto se encuentra en normal. Las opciones
 #' son "miles", "millones" o "milesmillones".
-#' @return La gráfica lista para agregarle etiquetas y toques finales 
+#' @return La gráfica lista para agregarle etiquetas y toques finales
 #' @export
-graficaCol <- function(data, color1=pkg.env$color1, ancho = 0.6, ordenar = TRUE, escala = "normal")
-{
-  
+graficaCol <- function(data, color1=pkg.env$color1, ancho = 0.6, ordenar = TRUE, escala = "normal") {
   ggplot2::theme_set(pkg.env$temaColumnas)
-  names(data)<- c("x","y")
-  data <- data[ordenarNiveles(data, ordenar),]
+  names(data) <- c("x", "y")
+  data <- data[ordenarNiveles(data, ordenar), ]
   data$x <- factor(data$x, levels = data$x)
   levels(data$x) <- gsub("\\\\n", "\n", levels(data$x))
-  # print(levels(data$x))
-  
-  
   ##Poniendo la escala correspondiente
-  if(toupper(escala) == "MILES"){
-    data$y <- data$y/1000
-  }else if(toupper(escala) == "MILLONES"){
-    data$y <- data$y/1000000
-  }else if(toupper(escala) == "MILESMILLONES"){
-    data$y <- data$y/1000000000
+  if (toupper(escala) == "MILES") {
+    data$y <- data$y / 1000
+  }else if(toupper(escala) == "MILLONES") {
+    data$y <- data$y / 1000000
+  }else if(toupper(escala) == "MILESMILLONES") {
+    data$y <- data$y / 1000000000
   }
-  
   numeroCol <- nrow(data)
-  
-  if( numeroCol == 3 ){
+  if (numeroCol == 3) {
     ancho <- 0.4
-  }else if( numeroCol == 4){
+  }else if (numeroCol == 4) {
     ancho <- 0.5
-  }else if( numeroCol == 5){
+  }else if(numeroCol == 5) {
     ancho <- 0.55
   }
-  # print(ancho)
-  # print(data$x)
-  # print(cortarEtiquetas(data$x))
   grafica <- ggplot2::ggplot(data, ggplot2::aes(x, y))
-  grafica <- grafica + 
+  grafica <- grafica +
     ggplot2::geom_bar(stat = 'identity', colour = calcularRampa(data, color1), fill = calcularRampa(data,pkg.env$colorRelleno), width = ancho, position =  "dodge")+
-    ggplot2::labs(x=NULL,y=NULL)+
-    ggplot2::scale_y_continuous(breaks=NULL)+
-    ggplot2::scale_x_discrete(breaks =  unique(data$x), labels = cortarEtiquetas(data$x))+
+    ggplot2::labs(x = NULL, y = NULL) +
+    ggplot2::scale_y_continuous(breaks = NULL) +
+    ggplot2::scale_x_discrete(breaks = unique(data$x), labels = cortarEtiquetas(data$x)) +
     ggplot2::geom_abline(intercept = 0, slope = 0, size = 0.1)
-  
-
   return(grafica)
 }
-
-
-
-
-
-
-
 
 #'Hace graficas de Barras
 #'@param data Data frame con el cual se hace la grafica
@@ -66,30 +47,27 @@ graficaCol <- function(data, color1=pkg.env$color1, ancho = 0.6, ordenar = TRUE,
 #'@param ordenar Booelano que indica si los datos deben ser ordenados o no
 #'@param escala Indica la escala en la cual debe estar el eje y de la grafica. Por defecto se encuentra en normal. Las opciones
 #' son "miles", "millones" o "milesmillones".
-graficaBar <- function(data, color1=pkg.env$color1, ancho = 0.6, ordenar = TRUE, escala = "normal")
+graficaBar <- function(data, color1 = pkg.env$color1, ancho = 0.6, ordenar = TRUE, escala = "normal")
 {
   ggplot2::theme_set(pkg.env$temaBarras)
-  names(data)<- c("x","y")
-  data <- data[rev(ordenarNiveles(data, ordenar)),]
+  names(data) <- c("x", "y")
+  data <- data[rev(ordenarNiveles(data, ordenar)), ]
   data$x <- factor(data$x, levels = data$x)
   levels(data$x) <- gsub("\\n", "\n", levels(data$x))
-  
   ##Poniendo la escala correspondiente
-  if(toupper(escala) == "MILES"){
-    data$y <- data$y/1000
-  }else if(toupper(escala) == "MILLONES"){
-    data$y <- data$y/1000000
-  }else if(toupper(escala) == "MILESMILLONES"){
-    data$y <- data$y/1000000000
+  if (toupper(escala) == "MILES") {
+    data$y <- data$y / 1000
+  }else if (toupper(escala) == "MILLONES") {
+    data$y <- data$y / 1000000
+  }else if (toupper(escala) == "MILESMILLONES") {
+    data$y <- data$y / 1000000000
   }
-  
-  
   grafica <- ggplot2::ggplot(data, ggplot2::aes(x, y))
-  grafica <- grafica + 
+  grafica <- grafica +
     ggplot2::geom_bar(stat = 'identity',fill = calcularRampa(data, pkg.env$colorRelleno), colour = calcularRampa(data, color1), width = ancho, position =  "dodge")+
-    ggplot2::labs(x=NULL,y=NULL)+
-    ggplot2::geom_abline(intercept = 0, slope = 0, size = 0.1)+
-    ggplot2::scale_y_continuous(breaks=NULL, expand= c(0.0,0.0))+
+    ggplot2::labs(x = NULL, y = NULL)+
+    ggplot2::geom_abline(intercept = 0, slope = 0, size = 0.1) +
+    ggplot2::scale_y_continuous(breaks = NULL, expand = c(0.0, 0.0)) +
     #intento de partir las etiquetas del eje
     #ggplot2::scale_x_discrete(labels = function(x) strwrap(x,width = 30)) + 
     ggplot2::theme(

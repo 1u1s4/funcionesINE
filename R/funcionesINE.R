@@ -5,14 +5,14 @@
 #' @param color2 El color secundario que va cuando encuentra palabras clave
 #' @return Vector con la rampa de colores
 calcularRampa <- function(data, color1 = pkg.env$color1, color2 = pkg.env$color2) {
-  rampa = NULL
+  rampa <- NULL
   for (elemento in data$x) {
     if (elemento %in% pkg.env$ignorado) {
-      rampa = c(rampa,pkg.env$gris)
+      rampa <- c(rampa, pkg.env$gris)
     } else if (elemento %in% pkg.env$repu) {
-      rampa = c(rampa, color2)
+      rampa <- c(rampa, color2)
     } else {
-      rampa = c(rampa,color1)
+      rampa <- c(rampa, color1)
     }
   }
   return(rampa)

@@ -5,16 +5,16 @@
 #'@param noColumn El número de columna sobre el cúal se quiere hacer el análisis de la longitud de la palabra
 cambiarNombres <- function(data,noColumn){
   for(x in 1:nrow(data[noColumn]) ){
-    if ( stringi::stri_length( data[noColumn][[1]][x] ) > pkg.env$longitudMaxima ){
-      corta <- buscarPalabraDiccionario( data[noColumn][[1]][x] )
-      if ( corta == -1 ){
-        print( data[noColumn][[1]][x] )
+    if (stringi::stri_length( data[noColumn][[1]][x] ) > pkg.env$longitudMaxima){
+      corta <- buscarPalabraDiccionario(data[noColumn][[1]][x])
+      if (corta == -1) {
+        print(data[noColumn][[1]][x])
         message("La palabra es muy larga, escriba una frase corta: \n")
-        corta <- readLines(n=1)
+        corta <- readLines(n = 1)
         data[noColumn][[1]][x] <- corta
-        guardarPalabraEnDiccionario( data[noColumn][[1]][x], corta )
+        guardarPalabraEnDiccionario(data[noColumn][[1]][x], corta)
       }
-    }else{
+    }else {
       print("Palabras cortas")
     }
   }
@@ -28,27 +28,23 @@ cambiarNombres <- function(data,noColumn){
 #' @export
 #'
 #' @examples
-crearDiccionarioPalabras <- function(){
+crearDiccionarioPalabras <- function() {
  #La ruta para la creación del diccionario
-  if (.Platform$OS.type == "unix" ) {
-    rutaPadre = "~/Dictionary"
+  if (.Platform$OS.type == "unix") {
+    rutaPadre <- "~/Dictionary"
   }else{
-    usuario = Sys.getenv("USERNAME")
+    usuario <- Sys.getenv("USERNAME")
     dir.create("Dictionary")
-    rutaPadre <- paste(getwd(),"Dictionary", sep="/")
+    rutaPadre <- paste(getwd(), "Dictionary", sep = "/")
     #rutaPadre = paste0("C:/Users/", usuario)
   }
-  
-  rutaDiccionario = "diccionarioAcortador"  
-  
-  pkg.env$rutaDiccionarioAcortador = file.path(rutaPadre,rutaDiccionario)
-  
-  if (!file.exists( rutaPadre )){
-    dir.create( file.path(rutaPadre) )
+  rutaDiccionario <- "diccionarioAcortador"
+  pkg.env$rutaDiccionarioAcortador <- file.path(rutaPadre, rutaDiccionario)
+  if (!file.exists(rutaPadre)) {
+    dir.create(file.path(rutaPadre))
   }
-  
-  if ( !file.exists( pkg.env$rutaDiccionarioAcortador ) ){
-    unlink( pkg.env$rutaDiccionarioAcortador, recursive = F )
+  if (!file.exists(pkg.env$rutaDiccionarioAcortador)) {
+    unlink(pkg.env$rutaDiccionarioAcortador, recursive = FALSE)
     filehash::dbCreate(pkg.env$rutaDiccionarioAcortador, type = "DB1")
     message("Diccionario Creado")
   }
@@ -63,30 +59,29 @@ crearDiccionarioPalabras <- function(){
 #' @export
 #'
 #' @examples
-buscarPalabraDiccionario <- function(key){
+buscarPalabraDiccionario <- function(key) {
   crearDiccionarioPalabras()
   #revisando si se tiene la palabra
   estaPalabra <- filehash::dbExists(pkg.env$diccionarioEncortador, filehash:::sha1(key))
   
-  if( estaPalabra ){
+  if (estaPalabra) {
     corta <- filehash::dbFetch( pkg.env$diccionarioEncortador, filehash:::sha1(key) )
-  }else{
+  }else {
     corta <- -1
   }
-  
   return(corta)
 }
 
 
 #' Función que guarda el resumen de una palabra larga cuando el usuario la ingresa
 #'
-#' @param key 
-#' @param corta 
+#' @param key
+#' @param corta
 #'
 #' @return
 #' @export
 #'
 #' @examples
-guardarPalabraEnDiccionario <- function(key, corta){
+guardarPalabraEnDiccionario <- function(key, corta) {
   filehash::dbInsert(pkg.env$diccionarioEncortador, filehash:::sha1(key), corta)
 }

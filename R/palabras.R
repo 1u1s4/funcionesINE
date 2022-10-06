@@ -52,13 +52,7 @@ crearDiccionarioPalabras <- function(){
     filehash::dbCreate(pkg.env$rutaDiccionarioAcortador, type = "DB1")
     message("Diccionario Creado")
   }
-  
   pkg.env$diccionarioEncortador <- filehash::dbInit(pkg.env$rutaDiccionarioAcortador)
-  
-  
-  
-
-  
 }
 
 #' Función que busca una palabra en el diccionario
@@ -96,5 +90,3 @@ buscarPalabraDiccionario <- function(key){
 guardarPalabraEnDiccionario <- function(key, corta){
   filehash::dbInsert(pkg.env$diccionarioEncortador, filehash:::sha1(key), corta)
 }
-
-

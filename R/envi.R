@@ -10,12 +10,6 @@ pkg.env$gris <- rgb(200,200,200, maxColorValue = 255)
 pkg.env$grisBase <- rgb(152,152,152, maxColorValue = 255)
 pkg.env$fontSize <-11
 pkg.env$botarCeros <- T
-
-
 pkg.env$modalidad <- NULL
 pkg.env$tamEti <- 3.2
 pkg.env$maxMin <- F
-
-
-
-

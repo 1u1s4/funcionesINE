@@ -17,7 +17,7 @@ calcularAlto <- function(texto, factor = 0.90, largo = 20) {
   ##file.create(texLog)
   ##file.create(texFile)
   # Abrir el texto con permisos de escritura.
-  texIn <- file(texFile, "w")
+  texIn <- file(texFile, "w", encoding = "UTF-8")
   # Escritura del preámbulo para el archivo LaTeX
   writeLines(getOption("tikzDocumentDeclaration"), texIn)
   writeLines("\\usepackage[T1]{fontenc}", texIn)

@@ -13,3 +13,4 @@ pkg.env$botarCeros <- TRUE
 pkg.env$modalidad <- NULL
 pkg.env$tamEti <- 3.2
 pkg.env$maxMin <- FALSE
+pkg.env$options(encoding = "utf-8")

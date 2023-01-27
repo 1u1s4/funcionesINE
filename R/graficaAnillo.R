@@ -27,7 +27,7 @@ graficaAnillo <- function(data, nombre, preambulo = T)
   data$y <- round(data$y,1)
   p1 <- ggplot2::ggplot(data, ggplot2::aes(fill =  x, ymax = ymax, ymin = ymin ,xmax= 10, xmin= 5))+
     #geom_rect(show_guide=F)+
-    ggplot2::geom_rect(fill = colores ,colour= colorBorde, show_guide=F)+
+    ggplot2::geom_rect(fill = colores ,colour= colorBorde, show.legend=F)+
     ggplot2::labs(x=NULL, y=NULL)+
     ggplot2::scale_y_continuous(breaks = y.breaks, labels=data$y, expand = c(0,0))+
     ggplot2::labs(x = NULL, y=NULL)+

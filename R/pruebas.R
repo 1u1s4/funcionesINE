@@ -25,5 +25,7 @@ tt <- as.data.frame(tt)
 
 
 tikzDevice::tikz('../ENEI2022/Graficas/prueba.tex', standAlone = F, bg = "transparent" , width = 4 , height= 2.75, sanitize= F)
-fmsb::radarchart(tt)
+op <- par(mar = c(1, 2, 2, 2))
+fmsb::radarchart(tt, #custom polygon
+                 pcol=rgb(0.2,0.5,0.5,0.9) , pfcol=rgb(0.2,0.5,0.5,0.5) , plwd=4 )
 dev.off()

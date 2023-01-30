@@ -32,4 +32,4 @@ Imports:
 Description: Algoritmos basicos para la creacion de cuadros estadisticos con estilos propios
 License: GNU
 LazyData: true
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.3

@@ -47,7 +47,8 @@ graficaCol <- function(data, color1=pkg.env$color1, ancho = 0.6, ordenar = TRUE,
 #'@param ordenar Booelano que indica si los datos deben ser ordenados o no
 #'@param escala Indica la escala en la cual debe estar el eje y de la grafica. Por defecto se encuentra en normal. Las opciones
 #' son "miles", "millones" o "milesmillones".
-graficaBar <- function(data, color1 = pkg.env$color1, ancho = 0.6, ordenar = TRUE, escala = "normal")
+# graficaBar <- function(data, color1 = pkg.env$color1, ancho = 0.6, ordenar = TRUE, escala = "normal")
+graficaBar <- function(data, color1, ancho = 0.6, ordenar = TRUE, escala = "normal")
 {
   ggplot2::theme_set(pkg.env$temaBarras)
   names(data) <- c("x", "y")

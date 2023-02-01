@@ -50,7 +50,8 @@ graficaCol <- function(data, color1=pkg.env$color1, ancho = 0.6, ordenar = TRUE,
 # graficaBar <- function(data, color1 = pkg.env$color1, ancho = 0.6, ordenar = TRUE, escala = "normal")
 graficaBar <- function(data, color1, ancho = 0.6, ordenar = TRUE, escala = "normal")
 {
-  ggplot2::theme_set(pkg.env$temaBarras)
+  #ggplot2::theme_set(pkg.env$temaBarras)
+  ggplot2::theme_void()
   names(data) <- c("x", "y")
   data <- data[rev(ordenarNiveles(data, ordenar)), ]
   data$x <- factor(data$x, levels = data$x)

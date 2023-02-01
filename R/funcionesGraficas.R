@@ -48,10 +48,9 @@ graficaCol <- function(data, color1=pkg.env$color1, ancho = 0.6, ordenar = TRUE,
 #'@param escala Indica la escala en la cual debe estar el eje y de la grafica. Por defecto se encuentra en normal. Las opciones
 #' son "miles", "millones" o "milesmillones".
 # graficaBar <- function(data, color1 = pkg.env$color1, ancho = 0.6, ordenar = TRUE, escala = "normal")
-graficaBar <- function(data, color1, ancho = 0.6, ordenar = TRUE, escala = "normal")
+graficaBar <- function(data, color1 = pkg.env$color1, ancho = 0.6, ordenar = TRUE, escala = "normal")
 {
-  #ggplot2::theme_set(pkg.env$temaBarras)
-  ggplot2::theme_void()
+  ggplot2::theme_set(pkg.env$temaBarras)
   names(data) <- c("x", "y")
   data <- data[rev(ordenarNiveles(data, ordenar)), ]
   data$x <- factor(data$x, levels = data$x)
@@ -66,8 +65,7 @@ graficaBar <- function(data, color1, ancho = 0.6, ordenar = TRUE, escala = "norm
   }
   grafica <- ggplot2::ggplot(data, ggplot2::aes(x, y))
   grafica <- grafica +
-    # ggplot2::geom_bar(stat = 'identity',fill = calcularRampa(data, pkg.env$colorRelleno), colour = color1, width = ancho, position =  "dodge")+
-    ggplot2::geom_bar(stat = 'identity',fill = color1, colour = calcularRampa(data, color1), width = ancho, position =  "dodge")+
+    ggplot2::geom_bar(stat = 'identity',fill = calcularRampa(data, color1), colour = calcularRampa(data, color1), width = ancho, position =  "dodge")+
     ggplot2::labs(x = NULL, y = NULL)+
     ggplot2::geom_abline(intercept = 0, slope = 0, size = 0.1) +
     ggplot2::scale_y_continuous(breaks = NULL, expand = c(0.0, 0.0)) +
@@ -78,8 +76,6 @@ graficaBar <- function(data, color1, ancho = 0.6, ordenar = TRUE, escala = "norm
     ) +
     ggplot2::coord_flip()
   
-
-
   return(grafica)
 }
 

@@ -32,7 +32,7 @@ graficaCol <- function(data, color1=pkg.env$color1, ancho = 0.6, ordenar = TRUE,
   }
   grafica <- ggplot2::ggplot(data, ggplot2::aes(x, y))
   grafica <- grafica +
-    ggplot2::geom_bar(stat = 'identity', colour = calcularRampa(data, color1), fill = calcularRampa(data,pkg.env$colorRelleno), width = ancho, position =  "dodge")+
+    ggplot2::geom_bar(stat = 'identity', colour = calcularRampa(data, color1), fill = calcularRampa(data, color1), width = ancho, position =  "dodge")+
     ggplot2::labs(x = NULL, y = NULL) +
     ggplot2::scale_y_continuous(breaks = NULL) +
     ggplot2::scale_x_discrete(breaks = unique(data$x), labels = cortarEtiquetas(data$x)) +

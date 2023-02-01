@@ -66,7 +66,7 @@ graficaBar <- function(data, color1, ancho = 0.6, ordenar = TRUE, escala = "norm
   }
   grafica <- ggplot2::ggplot(data, ggplot2::aes(x, y))
   grafica <- grafica +
-    # ggplot2::geom_bar(stat = 'identity',fill = calcularRampa(data, pkg.env$colorRelleno), colour = calcularRampa(data, color1), width = ancho, position =  "dodge")+
+    # ggplot2::geom_bar(stat = 'identity',fill = calcularRampa(data, pkg.env$colorRelleno), colour = color1, width = ancho, position =  "dodge")+
     ggplot2::geom_bar(stat = 'identity',fill = color1, colour = calcularRampa(data, color1), width = ancho, position =  "dodge")+
     ggplot2::labs(x = NULL, y = NULL)+
     ggplot2::geom_abline(intercept = 0, slope = 0, size = 0.1) +

@@ -1214,3 +1214,21 @@ cortarEtiquetas <- function(etiquetas){
   }
   return(etiquetas)
 }
+
+
+
+#' Funcion que arregla la data para ser utilizada en Chrats de Radar. 
+#'
+#' @param data Data Frame a utilizar en el formato tradicional. Dimensiones x y y.
+#'
+#' @return
+#' @export
+#'
+#' @examples
+arreglar <- function(data){
+  dataT <- as.data.frame(matrix(ncol = length(data$x)))
+  dataT[1,] <- data$y
+  colnames(dataT) <- data$x
+  dataTT <- rbind(rep(max(data$y*1.15,100), length(data$x)), rep(0, length(data$x)), dataT )
+  return(dataTT)
+}

@@ -376,3 +376,28 @@ graficaBarFacets <-function(data, ruta, escala = 'normal', etiquetas = 'H', prea
   grDevices::dev.off()
   
 }
+
+
+#' Gráfica tipo radar
+#' Se utiliza para mostrar un perfil de un individuo u objeto. 
+#' Tiene varias desventajas, y aunque se ve elegante, debe ser utilizada con 
+#' cuidado. 
+#' @param data Es el data frame a utilizar. Formato usual, dimensión x y y. 
+#' @param file Ruta en donde se exportará la grafica como codigo tikz. 
+#' @param preambulo Booleano que determina si se desea para compilar po si misma
+#' o solamente para incluir en documento maestro. 
+#'
+#' @return Null
+#' @export
+#'
+#' @examples
+graficaRadar <- function(data, file, preambulo = F){
+  dataArreglada <- arreglar(data)
+  dataArreglada <- as.data.frame(dataArreglada)
+  tikzDevice::tikz(file, standAlone = preambulo, bg = "transparent",bareBones = !preambulo , width = pkg.env$ancho , height= pkg.env$alto, sanitize= F)
+  op <- par(mar = c(1,2,1,2))
+  fmsb::radarchart(dataArreglada, pcol = pkg.env$color1, cglty = 3, 
+                   plwd = 2, pfcol =  pkg.env$color2)
+  dev.off()
+  
+}

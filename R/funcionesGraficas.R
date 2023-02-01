@@ -32,7 +32,7 @@ graficaCol <- function(data, color1=pkg.env$color1, ancho = 0.6, ordenar = TRUE,
   }
   grafica <- ggplot2::ggplot(data, ggplot2::aes(x, y))
   grafica <- grafica +
-    ggplot2::geom_bar(stat = 'identity', colour = calcularRampa(data, color1), fill = calcularRampa(data,pkg.env$colorRelleno), width = ancho, position =  "dodge")+
+    ggplot2::geom_bar(stat = 'identity', colour = calcularRampa(data, color1), fill = calcularRampa(data, color1), width = ancho, position =  "dodge")+
     ggplot2::labs(x = NULL, y = NULL) +
     ggplot2::scale_y_continuous(breaks = NULL) +
     ggplot2::scale_x_discrete(breaks = unique(data$x), labels = cortarEtiquetas(data$x)) +
@@ -47,6 +47,7 @@ graficaCol <- function(data, color1=pkg.env$color1, ancho = 0.6, ordenar = TRUE,
 #'@param ordenar Booelano que indica si los datos deben ser ordenados o no
 #'@param escala Indica la escala en la cual debe estar el eje y de la grafica. Por defecto se encuentra en normal. Las opciones
 #' son "miles", "millones" o "milesmillones".
+# graficaBar <- function(data, color1 = pkg.env$color1, ancho = 0.6, ordenar = TRUE, escala = "normal")
 graficaBar <- function(data, color1 = pkg.env$color1, ancho = 0.6, ordenar = TRUE, escala = "normal")
 {
   ggplot2::theme_set(pkg.env$temaBarras)
@@ -64,7 +65,7 @@ graficaBar <- function(data, color1 = pkg.env$color1, ancho = 0.6, ordenar = TRU
   }
   grafica <- ggplot2::ggplot(data, ggplot2::aes(x, y))
   grafica <- grafica +
-    ggplot2::geom_bar(stat = 'identity',fill = calcularRampa(data, pkg.env$colorRelleno), colour = calcularRampa(data, color1), width = ancho, position =  "dodge")+
+    ggplot2::geom_bar(stat = 'identity',fill = calcularRampa(data, color1), colour = calcularRampa(data, color1), width = ancho, position =  "dodge")+
     ggplot2::labs(x = NULL, y = NULL)+
     ggplot2::geom_abline(intercept = 0, slope = 0, size = 0.1) +
     ggplot2::scale_y_continuous(breaks = NULL, expand = c(0.0, 0.0)) +
@@ -75,8 +76,6 @@ graficaBar <- function(data, color1 = pkg.env$color1, ancho = 0.6, ordenar = TRU
     ) +
     ggplot2::coord_flip()
   
-
-
   return(grafica)
 }
 

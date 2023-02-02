@@ -91,7 +91,7 @@ graficaBar <- function(data, color1 = pkg.env$color1, ancho = 0.6, ordenar = TRU
 #'un decimal.
 #'@export
 
-graficaLinea <- function(data, color1 = pkg.env$color1, inicio = -1, ancho = 1.5, precision=1, escala = "normal", rotar = T, final = NA)
+graficaLinea <- function(data, color1 = pkg.env$color1, inicio = -1, ancho = 1.5, precision=1, escala = "normal", rotar = T, final = NA, area = F)
 {
   pkg.env$precision <- precision
   # print("El tamaño de la fuente es: ")
@@ -123,6 +123,8 @@ graficaLinea <- function(data, color1 = pkg.env$color1, inicio = -1, ancho = 1.5
   # print(pkg.env$modalidad)
   grafica <- ggplot2::ggplot(data, ggplot2::aes(x,y, group=1))
   grafica <- grafica + ggplot2::geom_line( colour = color1, size = ancho)+
+  if (area = T) {
+    geom_area( fill= color1, alpha=0.4) + }
     ggplot2::labs(x=NULL,y=NULL)
   grafica <- etiquetasLineas(grafica, calcularPosiciones(grafica), precision = pkg.env$precision)
   margenArriba <- pt2mm(calcularAlto(10))

@@ -478,7 +478,7 @@ etiquetasBarras <- function(graph, margenIz = 0, precision = 1, cambiarNegativas
     pkg.env$botarCeros <- F
   }
   data$etiqueta <- formatC( formatC(data$y, format = "f",big.mark = ",", digits = pkg.env$precision,  drop0trailing = !pkg.env$botarCeros) ) 
-  graph <- graph + ggplot2::geom_text(data = data ,ggplot2::aes(label= etiqueta ,family=pkg.env$fuente),size=pkg.env$sizeText,hjust = "outward", vjust = 0.5)
+  graph <- graph + ggplot2::geom_text(data = data ,ggplot2::aes(label= etiqueta ,family=pkg.env$fuente),size=pkg.env$sizeText,hjust = -0.2, vjust = 0.5, position = position_dodge(0.9))
   graph <- graph + ggplot2::theme(plot.margin = grid::unit(c(0,longitud + 2 ,0,0), "mm")
                                   ,axis.text.y= ggplot2::element_text(margin=ggplot2::margin(0,espacio,0,0, unit = "mm") )                
                   #,axis.text.y = ggplot2::element_text(margin=ggplot2::margin(0,longitud,1,longitudIzquierda), "mm")

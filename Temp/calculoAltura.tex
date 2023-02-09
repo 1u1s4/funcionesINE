@@ -1,0 +1,23 @@
+\documentclass[11pt,twoside]{book}
+\usepackage[T1]{fontenc}
+\usepackage{tikz}
+\usepackage[active,tightpage,xetex]{preview}
+\usepackage{fontspec,xunicode}
+\PreviewEnvironment{pgfpicture}
+\setlength\PreviewBorder{0pt}
+\setlength\PreviewBorder{0pt}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usepackage{fontspec,xunicode}
+\setmainfont{Open Sans Condensed Light}
+\usetikzlibrary{calc}
+\batchmode
+\begin{document}
+\begin{tikzpicture}
+\node[inner sep=0pt, outer sep=0pt, text width =56.692913328, scale = 0.9] (TeX){15.2};
+\path let \p1 = ($(TeX.north) - (TeX.south)$),
+\n1 = {veclen(\x1,\y1)} in (TeX.east) -- (TeX.west)
+node{ \typeout{tikzTeXWidth=\n1}};
+\makeatletter
+\end{tikzpicture}
+\end{document}

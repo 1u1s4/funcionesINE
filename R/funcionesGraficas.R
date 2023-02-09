@@ -158,6 +158,87 @@ graficaLinea <- function(data, color1 = pkg.env$color1, inicio = -1, ancho = 1.5
   return(grafica)
 }
 
+
+#'Hace una grafica de linea con área bajo la curva sombreada, util para series historicas
+#'
+#'@param data El data frame para hacer la gráfica
+#'@param color1 El color en el que se desea la linea
+#'@param inicio El dato desde donde se quiere que se visualice la gráfica
+#'@param ancho El grosor de la linea
+#' @param escala Indica la escala en la cual debe estar el eje y de la grafica. Por defecto se encuentra en normal. Las opciones
+#' son "miles", "millones" o "milesmillones".
+#'@param precision Se refiere al número de decimales que se desean mostrar en la gráfica. Por defecto se usa
+#'un decimal.
+#'@export
+
+graficaLineaArea <- function(data, color1 = pkg.env$color1, inicio = -1, ancho = 1.5, precision=1, escala = "normal", rotar = T, final = NA)
+{
+  pkg.env$precision <- precision
+  # print("El tamaño de la fuente es: ")
+  # print(pkg.env$fontSize)
+  ggplot2::theme_set(pkg.env$temaColumnas)
+  names(data)<- c("x","y")
+  
+  ##Poniendo la escala correspondiente
+  if(toupper(escala) == "MILES"){
+    data$y <- data$y/1000
+  }else if(toupper(escala) == "MILLONES"){
+    data$y <- data$y/1000000
+  }else if(toupper(escala) == "MILESMILLONES"){
+    data$y <- data$y/1000000000
+  }
+  
+  ##Fijando los niveles para que R no los cambie
+  data$x <- factor(data$x, levels = data$x)
+  
+  
+  ## Cambiando el ancho cuando es trimestral
+  if (pkg.env$modalidad == "trimestral" ){
+    ancho <- 0.5
+  }else if(pkg.env$modalidad =="presentacion"){
+    # print('Como presentacion')
+    ancho <- 0.8
+  }
+  # print("La modalidad es: \n")
+  # print(pkg.env$modalidad)
+  grafica <- ggplot2::ggplot(data, ggplot2::aes(x,y, group=1))
+  grafica <- grafica + ggplot2::geom_line( colour = color1, size = ancho)+
+    ggplot2::geom_area( fill=color1, alpha=0.4) +
+    ggplot2::labs(x=NULL,y=NULL)
+  grafica <- etiquetasLineas(grafica, calcularPosiciones(grafica), precision = pkg.env$precision)
+  margenArriba <- pt2mm(calcularAlto(10))
+  ## Rotanto las etiquetas del eje x cuando la modalidad es trimestral
+  
+  if(pkg.env$modalidad == "trimestral" || rotar == T){
+    grafica <- grafica + ggplot2::theme(axis.text.x = ggplot2::element_text(family = pkg.env$fuente,angle = 90, vjust =0.5 , hjust= 1))
+  }
+  
+  minimo <- min(ggplot2::ggplot_build(grafica)$data[[1]]$y)
+  maximo <- max(ggplot2::ggplot_build(grafica)$data[[1]]$y)
+  
+  if (inicio == -1){
+    limite <- minimo - 
+      0.3*(maximo - minimo)  
+  }else{
+    limite <- inicio
+  }
+  
+  
+  # print(paste('El límite es: ', limite))
+  grafica <- grafica + ggplot2::geom_abline(intercept = limite, slope = 0, size = 0.1)
+  if(ggplot2::ggplot_build(grafica)$data[[1]]$y[1] > 3)
+  {
+    grafica <- grafica + ggplot2::scale_y_continuous(limits = c(limite,final))+
+      ggplot2::theme(plot.margin = grid::unit(c(margenArriba,3,1,-5), "mm"))
+  }
+  else
+  {
+    grafica <- grafica + ggplot2::scale_y_continuous(limits = c(limite,final))+
+      ggplot2::theme(plot.margin = grid::unit(c(margenArriba,3,1,-2), "mm"))
+  }
+  return(grafica)
+}
+
 #'Genera graficas de dobles lineas en un mismo panel.
 #'
 #'@param data El data frame para hacer la gráfica

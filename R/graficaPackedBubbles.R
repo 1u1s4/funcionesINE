@@ -1,6 +1,6 @@
 # Para óptimo funcionamiento usar datos categóricos y con su respectivo porcentaje
 
-graficaPackedBubbles <- function(data, color_capitulo)
+graficaPackedBubbles <- function(data)
 {
 	# Create data
 	db <- subset(data.frame(data), y >3)
@@ -25,10 +25,10 @@ graficaPackedBubbles <- function(data, color_capitulo)
   
   	# Make the bubbles
   	geom_polygon(data = dat.gg, aes(x, y, group = id, fill=id), colour = "transparent", alpha = 1) +
-  	scale_fill_gradient(low = color_capitulo, high = "#C1B9C3") +
+  	scale_fill_gradient(low = pkg.env$color1, high = "#C1B9C3") +
   
   	# Add text in the center of each bubble + control its size
-  	geom_text(data = db, aes(x, y, size= Valor, label = paste0(Categoría, "\n", round(Valor, 1), "%"), family = "Open Sans Condensed Light", fontface = "plain")) +
+  	geom_text(data = db, aes(x, y, size= Valor, label = paste0(Categoría, "\n", round(Valor, 1)), family = "Open Sans Condensed Light", fontface = "plain")) +
   	scale_size_continuous(range = c(3.5,6)) +
   
     	# General theme:

@@ -60,7 +60,10 @@ graficaColCategorias <- function(data, etiquetasCategorias = "A", escala = "norm
   print(colores)
   ggplot2::theme_set(pkg.env$temaColumnas)
   grafica <- ggplot2::ggplot(dataLista, ggplot2::aes(x = x, y = y, fill = categoria))+
-    ggplot2::geom_bar(stat = 'identity', position =  ggplot2::position_dodge(width = 0.9), width=ancho, colour = rep(coloresBorde, length(data$x))  )+
+    #ggplot2::geom_bar(stat = 'identity', position =  
+    #                    ggplot2::position_dodge(width = 0.9), 
+    #                  width=ancho, colour = rep(colores, data$x)  )+
+    ggplot2::geom_bar(stat = 'identity', position =  ggplot2::position_dodge(width = 0.9), width=ancho)+
     ggplot2::labs(x=NULL, y=NULL)+
     ggplot2::scale_y_continuous(breaks=NULL, expand = c(0,0))+
     ggplot2::geom_abline(intercept = 0, slope = 0)+

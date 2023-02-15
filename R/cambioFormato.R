@@ -1,3 +1,4 @@
+# TEST
 #'Funcion para cambiar los ambitos de la graficas
 #'
 cambiarGraficas <- function(tamFuente) {

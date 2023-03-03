@@ -3,7 +3,7 @@
 
 cambiarGraficas <- function(tamFuente){
   pkg.env$fontSize <-tamFuente
-  print(c("El tamaño de la fuente es: ", pkg.env$fontSize))
+  #print(c("El tamaño de la fuente es: ", pkg.env$fontSize))
   pkg.env$sizeText <- pkg.env$fontSize * (5/14)
   
   pkg.env$temaINE <- ggplot2::theme_gray(base_size = pkg.env$fontSize, base_family = "Open Sans Condensed Light")+ ggplot2::theme(

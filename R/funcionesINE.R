@@ -337,13 +337,13 @@ etiquetasLineas <- function(graph, posiciones, precision = 1) {
     # print("#####LAS ETIQUETAS SON ##########" )
     # print(d$etiqueta)
     if (posiciones[[i]] == 1) {
-      graph <- graph + ggplot2::geom_text(data = d, ggplot2::aes(label=ifelse(stringr::str_trim(etiqueta) == "NA" ,"",etiqueta),family=pkg.env$fuente),size=pkg.env$sizeText,hjust = 0.5, vjust = -0.5)
+      graph <- graph + ggplot2::geom_text_repel(data = d, ggplot2::aes(label=ifelse(stringr::str_trim(etiqueta) == "NA" ,"",etiqueta),family=pkg.env$fuente),size=pkg.env$sizeText,hjust = 0.5, vjust = -0.5)
     } else if (posiciones[[i]] == -1) {
-      graph <- graph + ggplot2::geom_text(data = d,ggplot2::aes(label=ifelse(stringr::str_trim(etiqueta) == "NA","",etiqueta),family=pkg.env$fuente),size=pkg.env$sizeText,hjust = 0.5, vjust = 1.5)
+      graph <- graph + ggplot2::geom_text_repel(data = d,ggplot2::aes(label=ifelse(stringr::str_trim(etiqueta) == "NA","",etiqueta),family=pkg.env$fuente),size=pkg.env$sizeText,hjust = 0.5, vjust = 1.5)
     } else if(posiciones[[i]] == 0.5) {
-      graph <- graph +ggplot2::geom_text(data =d,ggplot2::aes(label=ifelse(stringr::str_trim(etiqueta) == "NA","", etiqueta),family=pkg.env$fuente),size=pkg.env$sizeText,hjust = 0, vjust = -0.5)
+      graph <- graph +ggplot2::geom_text_repel(data =d,ggplot2::aes(label=ifelse(stringr::str_trim(etiqueta) == "NA","", etiqueta),family=pkg.env$fuente),size=pkg.env$sizeText,hjust = 0, vjust = -0.5)
     } else {
-      graph <- graph + ggplot2::geom_text(data = d,ggplot2::aes(label=ifelse(stringr::str_trim(etiqueta) == "NA","",etiqueta),family=pkg.env$fuente),size=pkg.env$sizeText,hjust = 1.2, vjust = 0)
+      graph <- graph + ggplot2::geom_text_repel(data = d,ggplot2::aes(label=ifelse(stringr::str_trim(etiqueta) == "NA","",etiqueta),family=pkg.env$fuente),size=pkg.env$sizeText,hjust = 1.2, vjust = 0)
     }
   }
   return(graph)
@@ -654,7 +654,7 @@ etiquetasVerticales <- function(graph, precision = 1){
 #'
 #'@param nombre Ruta del fichero LaTeX
 #'@param graph Objeto ggplot2 que se desea exportar a LaTeX
-exportarLatex <- function(nombre = grafica.tex, graph, preambulo = F) {
+exportarLatex <- function(nombre = grafica.tex, graph, preambulo = T) {
   tikzDevice::tikz(nombre, standAlone = preambulo, bareBones = TRUE, bg = "transparent", width = pkg.env$ancho, height= pkg.env$alto, sanitize = F)
   temp<- ggplot2::ggplot_gtable(ggplot2::ggplot_build(graph))
   temp$layout$clip[temp$layout$name=="panel"] <- "off"

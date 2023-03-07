@@ -558,7 +558,7 @@ etiquetasHorizontales <- function(graph, precision = 1, cambiarNegativas = F) {
   max <-ggplot2::ggplot_build(graph)$panel$ranges[[1]]$x.range[2]
   min <-ggplot2::ggplot_build(graph)$panel$ranges[[1]]$x.range[1]
   longitud <- tikzDevice::getLatexStrWidth(formatC(max, format = "f", big.mark = ",", digits = pkg.env$precision), cex = pkg.env$fEscala) 
-  longitud <- longitud * 0.352777778 + 2.3
+  longitud <- longitud * 0.352777778 + 2.3 + 10
   longitudInferior <- tikzDevice::getLatexStrWidth(formatC(min, format = "f", big.mark = ",", digits = pkg.env$precision), cex = pkg.env$fEscala)
   longitudInferior <- longitudInferior * 0.352777778 + 2.3
   if (sonEnteros(ggplot2::ggplot_build(graph)$data[[1]]) == 0) {
@@ -581,7 +581,7 @@ etiquetasHorizontales <- function(graph, precision = 1, cambiarNegativas = F) {
       graph <- graph + ggplot2::geom_text(data = d, ggplot2::aes(label=ifelse(stringr::str_trim(etiqueta) == 'NA', "", etiqueta), family=pkg.env$fuente), size=pkg.env$sizeText, hjust = 0.5, vjust = 1.5 )
     }
   }
-  graph <- graph + ggplot2::theme(axis.text.x = ggplot2::element_text(margin=ggplot2::margin(0,0,espacio+5,0,"mm")))+
+  graph <- graph + ggplot2::theme(axis.text.x = ggplot2::element_text(margin=ggplot2::margin(0,0,espacio,0,"mm")))+
     ggplot2::theme(plot.margin = grid::unit(c(7,0,0,0), "mm"))
   return(graph)
 }

@@ -37,7 +37,7 @@ graficaCol <- function(data, color1=pkg.env$color1, ancho = 0.6, ordenar = TRUE,
     ggplot2::scale_y_continuous(breaks = NULL) +
     ggplot2::scale_x_discrete(breaks = unique(data$x), labels = cortarEtiquetas(data$x)) +
     ggplot2::geom_abline(intercept = 0, slope = 0, size = 0.1) +
-    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1)) # Ajusta la posición vertical de las etiquetas del eje x
+    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, vjust = 1)) # Ajusta la posición vertical de las etiquetas del eje x
   return(grafica)
 }
 

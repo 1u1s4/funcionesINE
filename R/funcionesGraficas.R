@@ -37,8 +37,7 @@ graficaCol <- function(data, color1=pkg.env$color1, ancho = 0.6, ordenar = TRUE,
     ggplot2::scale_y_continuous(breaks = NULL) +
     ggplot2::scale_x_discrete(breaks = unique(data$x), labels = cortarEtiquetas(data$x)) +
     ggplot2::geom_abline(intercept = 0, slope = 0, size = 0.1) +
-    ggplot2::geom_text(ggplot2::aes(label = y), position = ggplot2::position_dodge(width = ancho), vjust = ifelse(data$y < 0, 1.5, -0.5), check_overlap = TRUE)
-    #ggplot2::geom_text(data = data, ggplot2::aes(label=etiqueta, hjust=ifelse(y>=0, -0.2, 1.2)
+    ggplot2::geom_text(data = data, ggplot2::aes(label=y, vjust=ifelse(y>=0, -1.2, 2.2)))
   return(grafica)
 }
 

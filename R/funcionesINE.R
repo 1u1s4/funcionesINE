@@ -1212,7 +1212,6 @@ cortarEtiquetas <- function(etiquetas){
     etiquetas[i] <- substring(temp, first = 2)
     # print(etiquetas)
   }
-  etiquetas <- element_text(vjust = 1.5) # Agrega este argumento para ajustar la posición vertical del texto
   return(etiquetas)
 }
 

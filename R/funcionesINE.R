@@ -582,7 +582,8 @@ etiquetasHorizontales <- function(graph, precision = 1, cambiarNegativas = F) {
     }
   }
   graph <- graph + ggplot2::theme(axis.text.x = ggplot2::element_text(margin=ggplot2::margin(0,0,espacio,0,"mm")))+
-    ggplot2::theme(plot.margin = grid::unit(c(1,1,5,1), "lines"))
+    ggplot2::theme(plot.margin = grid::unit(c(7,0,0,0), "mm")) + 
+    ggplot2::theme(axis.text.x = ggplot2::element_text(margin=ggplot2::margin(5,0,0,0,"mm")))
   return(graph)
 }
 

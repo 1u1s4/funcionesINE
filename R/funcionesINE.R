@@ -550,9 +550,9 @@ etiquetasHorizontales <- function(graph, precision = 1, cambiarNegativas = F) {
   data <- ggplot2::ggplot_build(graph)$data[[1]]
   if (nrow(subset(data, y < 0)) > 0) {
     min <- min(data$y)
-    espacio <- 20
+    espacio <- -4.5
   } else {
-    espacio <- 20
+    espacio <- 0
   }
   longitudIzquierda <- 0
   max <-ggplot2::ggplot_build(graph)$panel$ranges[[1]]$x.range[2]

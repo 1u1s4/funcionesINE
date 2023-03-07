@@ -36,7 +36,7 @@ graficaCol <- function(data, color1=pkg.env$color1, ancho = 0.6, ordenar = TRUE,
     ggplot2::labs(x = NULL, y = NULL) +
     ggplot2::scale_y_continuous(breaks = NULL) +
     ggplot2::scale_x_discrete(breaks = unique(data$x), labels = cortarEtiquetas(data$x)) +
-    ggplot2::geom_abline(intercept = 0, slope = 0, size = 0.1) +
+    ggplot2::geom_abline(intercept = 0, slope = 0, size = 0.1)
     #ggplot2::geom_text(data = data, ggplot2::aes(label=y, vjust=ifelse(y<=0, -1.2, 2.2)))
   return(grafica)
 }

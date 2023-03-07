@@ -431,7 +431,7 @@ completarEtiquetas <- function(dato, posicion, tam=5) {
 #'@return Objeto ggplot2 modificado en las etiquetas del eje X
 rotarEtiX <- function(graph) {
   longitud <- 2.8 + 2
-  graph <- graph + ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, vjust = 0.5 , hjust = -1))
+  graph <- graph + ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, vjust = 0.5 , hjust = 1))
 }
 
 #'Funcion que rota las etiquetas en el eje X para graficas de columnas que poseen
@@ -582,7 +582,7 @@ etiquetasHorizontales <- function(graph, precision = 1, cambiarNegativas = F) {
     }
   }
   graph <- graph + ggplot2::theme(axis.text.x = ggplot2::element_text(margin=ggplot2::margin(0,0,espacio,0,"mm")))+
-    ggplot2::theme(plot.margin = grid::unit(c(7,0,0,0), "mm"))
+    ggplot2::theme(plot.margin = grid::unit(c(1,1,5,1), "lines"))
   return(graph)
 }
 

@@ -563,7 +563,7 @@ etiquetasHorizontales <- function(graph, precision = 1, cambiarNegativas = F) {
   longitud <- tikzDevice::getLatexStrWidth(formatC(max, format = "f", big.mark = ",", digits = pkg.env$precision), cex = pkg.env$fEscala) 
   longitud <- longitud * 0.352777778 + 2.3
   longitudInferior <- tikzDevice::getLatexStrWidth(formatC(min, format = "f", big.mark = ",", digits = pkg.env$precision), cex = pkg.env$fEscala)
-  longitudInferior <- longitudInferior * 0.352777778 + 2.3
+  longitudInferior <- longitudInferior * 0.352777778 + 23
   if (sonEnteros(ggplot2::ggplot_build(graph)$data[[1]]) == 0) {
     pkg.env$botarCeros <- T
   } else {

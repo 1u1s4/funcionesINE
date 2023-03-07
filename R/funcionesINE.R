@@ -550,7 +550,7 @@ etiquetasHorizontales <- function(graph, precision = 1, cambiarNegativas = F) {
   data <- ggplot2::ggplot_build(graph)$data[[1]]
   if (nrow(subset(data, y < 0)) > 0) {
     min <- min(data$y)
-    espacio <- -4.5
+    espacio <- 4.5
   } else {
     espacio <- 0
   }
@@ -581,7 +581,7 @@ etiquetasHorizontales <- function(graph, precision = 1, cambiarNegativas = F) {
       graph <- graph + ggplot2::geom_text(data = d, ggplot2::aes(label=ifelse(stringr::str_trim(etiqueta) == 'NA', "", etiqueta), family=pkg.env$fuente), size=pkg.env$sizeText, hjust = 0.5, vjust = 1.5 )
     }
   }
-  graph <- graph + ggplot2::theme(axis.text.x = ggplot2::element_text(margin=ggplot2::margin(0,0,espacio,0,"mm")))+
+  graph <- graph + ggplot2::theme(axis.text.x = ggplot2::element_text(margin=ggplot2::margin(0,0,espacio+5,0,"mm")))+
     ggplot2::theme(plot.margin = grid::unit(c(7,0,0,0), "mm"))
   return(graph)
 }

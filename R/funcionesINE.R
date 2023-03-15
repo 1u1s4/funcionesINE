@@ -1211,3 +1211,21 @@ arreglar <- function(data){
   dataTT <- rbind(rep(max(data$y*1.15,100), length(data$x)), rep(0, length(data$x)), dataT )
   return(dataTT)
 }
+
+etiquetasCadaSeis <- function(data) {
+  etiquetas <- c()
+  n <- nrow(data)
+  #Añadir primer etiqueta
+  etiquetas <- c(etiquetas, data$x[1])
+  #Añadir las etiquetas cada 6 posiciones
+  for (i in seq(6, n-1, 6)) {
+    etiquetas <- c(etiquetas, data$x[i])
+  }
+  #Añadir última etiqueta
+  etiquetas <- c(etiquetas, data$x[n])
+  #Crear un nuevo data frame solo con las etiquetas necesarias
+  data.etiquetas <- data[data$x %in% etiquetas,]
+  #Reordenar las etiquetas en su orden original
+  data.etiquetas$x <- factor(data.etiquetas$x, levels = etiquetas)
+  return(data.etiquetas)
+}

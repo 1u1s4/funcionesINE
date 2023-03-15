@@ -1212,20 +1212,21 @@ arreglar <- function(data){
   return(dataTT)
 }
 
-etiquetasCadaSeis <- function(data) {
-  etiquetas <- c()
-  n <- nrow(data)
-  #Añadir primer etiqueta
-  etiquetas <- c(etiquetas, data$x[1])
-  #Añadir las etiquetas cada 6 posiciones
-  for (i in seq(6, n-1, 6)) {
-    etiquetas <- c(etiquetas, data$x[i])
+etiquetasLineasCadaSeis <- function(graph, precision = 1) {
+  data <- ggplot2::ggplot_build(graph)$data[[1]]
+  enteros <- sonEnteros(data)
+  new_labels <- c()
+  
+  for (i in 1:length(data$x)) {
+    if (i == 1 || i %% 6 == 0) {
+      dato <- data$y[i]
+      etiqueta <- formatC(as.numeric(dato), format = 'f', big.mark = ',', digits = precision, drop0trailing = enteros)
+      new_labels <- c(new_labels, etiqueta)
+    } else {
+      new_labels <- c(new_labels, "")
+    }
   }
-  #Añadir última etiqueta
-  etiquetas <- c(etiquetas, data$x[n])
-  #Crear un nuevo data frame solo con las etiquetas necesarias
-  data.etiquetas <- data[data$x %in% etiquetas,]
-  #Reordenar las etiquetas en su orden original
-  data.etiquetas$x <- factor(data.etiquetas$x, levels = etiquetas)
-  return(data.etiquetas)
+  
+  graph <- graph + ggplot2::geom_text(data = data, ggplot2::aes(x = data$x, y = data$y, label = new_labels), hjust = 0.5, vjust = -0.5, size = pkg.env$sizeText, family = pkg.env$fuente)
+  return(graph)
 }

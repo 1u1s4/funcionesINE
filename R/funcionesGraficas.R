@@ -92,7 +92,7 @@ graficaBar <- function(data, color1 = pkg.env$color1, ancho = 0.6, ordenar = TRU
 #'un decimal.
 #'@export
 
-graficaLinea <- function(data, color1 = pkg.env$color1, inicio = -1, ancho = 1.5, precision=1, escala = "normal", rotar = T, final = NA)
+graficaLinea <- function(data, color1 = pkg.env$color1, inicio = -1, ancho = 1.5, precision=1, escala = "normal", rotar = T, final = NA, etiquetaCadaSeis = F)
 {
   pkg.env$precision <- precision
   # print("El tamaño de la fuente es: ")
@@ -125,7 +125,11 @@ graficaLinea <- function(data, color1 = pkg.env$color1, inicio = -1, ancho = 1.5
   grafica <- ggplot2::ggplot(data, ggplot2::aes(x,y, group=1))
   grafica <- grafica + ggplot2::geom_line( colour = color1, size = ancho)+
     ggplot2::labs(x=NULL,y=NULL)
-  grafica <- etiquetasLineas(grafica, calcularPosiciones(grafica), precision = pkg.env$precision)
+  if(etiquetaCadaSeis){
+    grafica <- etiquetasLineas(grafica, calcularPosiciones(grafica), precision = pkg.env$precision)
+  } else {
+    grafica <- etiquetasLineasCadaSeis(grafica, precision = pkg.env$precision)
+  }
   margenArriba <- pt2mm(calcularAlto(10))
   ## Rotanto las etiquetas del eje x cuando la modalidad es trimestral
   

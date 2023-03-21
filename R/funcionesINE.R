@@ -1212,23 +1212,14 @@ arreglar <- function(data){
   return(dataTT)
 }
 
-#'Le pone las etiquetas al eje X de una gráfica de línea cada 6 posiciones
-#'
-#'@param graph Objeto del tipo ggplot2 al que desea agregar las etiquetas del eje X
-etiquetasEjeXCadaSeis <- function(graph) {
-  d <- ggplot2::ggplot_build(graph)$data[[1]]
-  n <- length(d$x)
-
-  # Crear un vector de etiquetas vacías
-  x_labels <- rep("", n)
-
-  # Rellenar cada sexta etiqueta con el valor correspondiente
-  for (i in seq(1, n, by = 6)) {
-    x_labels[i] <- as.character(d$x[i])
+etiquetasEjeXCadaSeis <- function(data) {
+  n <- nrow(data)
+  seq_etiquetas <- seq(1, n, by = 6)
+  if (!n %in% seq_etiquetas) {
+    seq_etiquetas <- c(seq_etiquetas, n)
   }
+  data$x <- as.factor(data$x)
+  data$etiqueta_eje_x <- ifelse(seq(data$x) %in% seq_etiquetas, as.character(data$x), "")
 
-  # Agregar las etiquetas al gráfico
-  graph <- graph + ggplot2::scale_x_discrete(labels = x_labels)
-
-  return(graph)
+  return(data)
 }

@@ -304,10 +304,6 @@ etiquetasLineas <- function(graph, posiciones, precision = 1) {
   pkg.env$precision <- precision
   d <- ggplot2::ggplot_build(graph)$data[[1]]
   enteros <- sonEnteros(d)
-  for (i in 1:length(posiciones)) {
-    if (is.na(posiciones[i])) {
-      next
-    }
   if (pkg.env$maxMin == T) {
     # print("La función de cuatro etiquetas está activada")
     lista <- NULL
@@ -349,7 +345,6 @@ etiquetasLineas <- function(graph, posiciones, precision = 1) {
     } else {
       graph <- graph + ggplot2::geom_text(data = d,ggplot2::aes(label=ifelse(stringr::str_trim(etiqueta) == "NA","",etiqueta),family=pkg.env$fuente),size=pkg.env$sizeText,hjust = 1.2, vjust = 0)
     }
-  }
   }
   return(graph)
 }
@@ -1225,13 +1220,22 @@ arreglar <- function(data){
 etiquetasLineasCadaSeis <- function(graph, precision = 1) {
   d <- ggplot2::ggplot_build(graph)$data[[1]]
   n <- length(d$y)
-  posiciones <- rep(NA, n)
-  posiciones[seq(1, n, by = 6)] <- 1
 
-  # Si la última posición no tiene etiqueta, la agregamos
-  if (is.na(posiciones[n])) {
-    posiciones[n] <- 1
+  for (i in seq(1, n, by = 6)) {
+    if (i == n) {
+      hjust <- 1.2
+      vjust <- 0
+    } else {
+      hjust <- 0.5
+      vjust <- -0.5
+    }
+    
+    enteros <- sonEnteros(d)
+    d$etiqueta <- formatC(as.numeric(completarEtiquetas(d$y[i], i, tam = n)), format = 'f', big.mark = ',', digits = precision, drop0trailing = enteros)
+    
+    graph <- graph + ggplot2::geom_text(data = d[i,], ggplot2::aes(label = etiqueta, family = pkg.env$fuente),
+                                        size = pkg.env$sizeText, hjust = hjust, vjust = vjust)
   }
 
-  return(etiquetasLineas(graph, posiciones, precision))
+  return(graph)
 }

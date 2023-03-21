@@ -1219,7 +1219,7 @@ etiquetasEjeXCadaSeis <- function(data) {
     seq_etiquetas <- c(seq_etiquetas, n)
   }
   data$x <- as.factor(data$x)
-  data$etiqueta_eje_x <- ifelse(seq(data$x) %in% seq_etiquetas, as.character(data$x), "")
+  data$etiqueta_eje_x <- ifelse(seq_along(data$x) %in% seq_etiquetas, as.character(data$x), "")
 
   return(data)
 }

@@ -1212,21 +1212,21 @@ arreglar <- function(data){
   return(dataTT)
 }
 
+#'Le pone las etiquetas a una grafica de linea cada 6 posiciones
+#'
+#'@param graph Objeto del tipo ggplot2 que desea anotar
+#'@param precision Numero de decimales con el que se desea el vector respuesta.
+#'Por defecto se usa un decimal
 etiquetasLineasCadaSeis <- function(graph, precision = 1) {
-  data <- ggplot2::ggplot_build(graph)$data[[1]]
-  enteros <- sonEnteros(data)
-  new_labels <- c()
-  
-  for (i in 1:length(data$x)) {
-    if (i == 1 || i %% 6 == 0) {
-      dato <- data$y[i]
-      etiqueta <- formatC(as.numeric(dato), format = 'f', big.mark = ',', digits = precision, drop0trailing = enteros)
-      new_labels <- c(new_labels, etiqueta)
-    } else {
-      new_labels <- c(new_labels, "")
-    }
+  d <- ggplot2::ggplot_build(graph)$data[[1]]
+  n <- length(d$y)
+  posiciones <- rep(NA, n)
+  posiciones[seq(1, n, by = 6)] <- 1
+
+  # Si la última posición no tiene etiqueta, la agregamos
+  if (is.na(posiciones[n])) {
+    posiciones[n] <- 1
   }
-  
-  graph <- graph + ggplot2::geom_text(data = data, ggplot2::aes(x = data$x, y = data$y, label = new_labels), hjust = 0.5, vjust = -0.5, size = pkg.env$sizeText, family = pkg.env$fuente)
-  return(graph)
+
+  return(etiquetasLineas(graph, posiciones, precision))
 }

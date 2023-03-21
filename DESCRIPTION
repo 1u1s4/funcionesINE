@@ -2,7 +2,7 @@ Package: funcionesINE
 Encoding: UTF-8
 Type: Package
 Title: Funcion para estilos y creacion de graficas
-Version: 1.6.1
+Version: 1.6.2
 Date: 2015-01-10
 Author: Hugo Garcia <hugoallangm@gmail.com>
 Maintainer: Hugo Garcia <hugoallanmg@gmail.com>

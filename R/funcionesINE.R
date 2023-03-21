@@ -304,6 +304,10 @@ etiquetasLineas <- function(graph, posiciones, precision = 1) {
   pkg.env$precision <- precision
   d <- ggplot2::ggplot_build(graph)$data[[1]]
   enteros <- sonEnteros(d)
+  for (i in 1:length(posiciones)) {
+    if (is.na(posiciones[i])) {
+      next
+    }
   if (pkg.env$maxMin == T) {
     # print("La función de cuatro etiquetas está activada")
     lista <- NULL
@@ -345,6 +349,7 @@ etiquetasLineas <- function(graph, posiciones, precision = 1) {
     } else {
       graph <- graph + ggplot2::geom_text(data = d,ggplot2::aes(label=ifelse(stringr::str_trim(etiqueta) == "NA","",etiqueta),family=pkg.env$fuente),size=pkg.env$sizeText,hjust = 1.2, vjust = 0)
     }
+  }
   }
   return(graph)
 }

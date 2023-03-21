@@ -1227,6 +1227,11 @@ etiquetasEjeXCadaSeis <- function(graph) {
     x_labels[i] <- as.character(d$x[i])
   }
 
+  # Asegurar que la última etiqueta también se muestre
+  if (!n %in% seq(1, n, by = 6)) {
+    x_labels[n] <- as.character(d$x[n])
+  }
+
   # Agregar las etiquetas al gráfico
   graph <- graph + ggplot2::scale_x_discrete(labels = x_labels)
 

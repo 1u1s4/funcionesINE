@@ -1212,30 +1212,23 @@ arreglar <- function(data){
   return(dataTT)
 }
 
-#'Le pone las etiquetas a una grafica de linea cada 6 posiciones
+#'Le pone las etiquetas al eje X de una gráfica de línea cada 6 posiciones
 #'
-#'@param graph Objeto del tipo ggplot2 que desea anotar
-#'@param precision Numero de decimales con el que se desea el vector respuesta.
-#'Por defecto se usa un decimal
-etiquetasLineasCadaSeis <- function(graph, precision = 1) {
+#'@param graph Objeto del tipo ggplot2 al que desea agregar las etiquetas del eje X
+etiquetasEjeXCadaSeis <- function(graph) {
   d <- ggplot2::ggplot_build(graph)$data[[1]]
-  n <- length(d$y)
+  n <- length(d$x)
 
+  # Crear un vector de etiquetas vacías
+  x_labels <- rep("", n)
+
+  # Rellenar cada sexta etiqueta con el valor correspondiente
   for (i in seq(1, n, by = 6)) {
-    if (i == n) {
-      hjust <- 1.2
-      vjust <- 0
-    } else {
-      hjust <- 0.5
-      vjust <- -0.5
-    }
-    
-    enteros <- sonEnteros(d)
-    d$etiqueta <- formatC(as.numeric(completarEtiquetas(d$y[i], i, tam = n)), format = 'f', big.mark = ',', digits = precision, drop0trailing = enteros)
-    
-    graph <- graph + ggplot2::geom_text(data = d[i,], ggplot2::aes(label = etiqueta, family = pkg.env$fuente),
-                                        size = pkg.env$sizeText, hjust = hjust, vjust = vjust)
+    x_labels[i] <- as.character(d$x[i])
   }
+
+  # Agregar las etiquetas al gráfico
+  graph <- graph + ggplot2::scale_x_discrete(labels = x_labels)
 
   return(graph)
 }

@@ -303,6 +303,7 @@ calcularPosicionesDobles <- function(graph) {
 etiquetasLineas <- function(graph, posiciones, precision = 1) {
   pkg.env$precision <- precision
   d <- ggplot2::ggplot_build(graph)$data[[1]]
+  print(d)
   enteros <- sonEnteros(d)
   if (pkg.env$maxMin == T) {
     # print("La función de cuatro etiquetas está activada")

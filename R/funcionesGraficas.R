@@ -134,7 +134,8 @@ graficaLinea <- function(data, color1 = pkg.env$color1, inicio = -1, ancho = 1.5
   ## Rotanto las etiquetas del eje x cuando la modalidad es trimestral
   
   if(pkg.env$modalidad == "trimestral" || rotar == T){
-    grafica <- grafica + ggplot2::theme(axis.text.x = ggplot2::element_text(family = pkg.env$fuente,angle = 90, vjust =0.5 , hjust= 1))
+    print("hola")
+    #grafica <- grafica + ggplot2::theme(axis.text.x = ggplot2::element_text(family = pkg.env$fuente,angle = 90, vjust =0.5 , hjust= 1))
   }
   
   minimo <- min(ggplot2::ggplot_build(grafica)$data[[1]]$y)

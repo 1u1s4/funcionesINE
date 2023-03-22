@@ -1228,6 +1228,6 @@ etiquetasEjeXCadaSeis <- function(graph) {
 
   # Agregar las etiquetas al gráfico
   graph <- graph + ggplot2::scale_x_discrete(labels = x_labels)
-
+  graph <- graph + ggplot2::theme(axis.text.x = ggplot2::element_text(family = pkg.env$fuente, angle = 90, vjust = 0.5 , hjust= 1))
   return(graph)
 }

@@ -303,7 +303,6 @@ calcularPosicionesDobles <- function(graph) {
 etiquetasLineas <- function(graph, posiciones, precision = 1) {
   pkg.env$precision <- precision
   d <- ggplot2::ggplot_build(graph)$data[[1]]
-  print(d)
   enteros <- sonEnteros(d)
   if (pkg.env$maxMin == T) {
     # print("La función de cuatro etiquetas está activada")
@@ -335,8 +334,8 @@ etiquetasLineas <- function(graph, posiciones, precision = 1) {
       # print(lista)
     }
     d$etiqueta <- formatC(as.numeric(completarEtiquetas(dato,i,tam = length(d$x))), format = 'f', big.mark = ',', digits = pkg.env$precision, drop0trailing = enteros)
-    # print("#####LAS ETIQUETAS SON ##########" )
-    # print(d$etiqueta)
+    print("#####LAS ETIQUETAS SON ##########" )
+    print(d$etiqueta)
     if (posiciones[[i]] == 1) {
       graph <- graph + ggplot2::geom_text(data = d, ggplot2::aes(label=ifelse(stringr::str_trim(etiqueta) == "NA" ,"",etiqueta),family=pkg.env$fuente),size=pkg.env$sizeText,hjust = 0.5, vjust = -0.5)
     } else if (posiciones[[i]] == -1) {
@@ -1218,7 +1217,6 @@ arreglar <- function(data){
 #'@param graph Objeto del tipo ggplot2 al que desea agregar las etiquetas del eje X
 etiquetasEjeXCadaSeis <- function(graph) {
   d <- ggplot2::ggplot_build(graph)$data[[1]]
-  print(d)
   n <- length(d$x)
 
   # Crear un vector de etiquetas vacías

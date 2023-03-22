@@ -1226,7 +1226,7 @@ etiquetasEjeXCadaSeis <- function(graph) {
   print(d$x)
   print(d$etiqueta)
   for (i in seq(1, n, by = 6)) {
-    x_labels[i] <- d$x[i]
+    x_labels[i] <- d$y[[i]]
   }
 
   # Agregar las etiquetas al gráfico

@@ -1214,7 +1214,7 @@ arreglar <- function(data){
 #'Le pone las etiquetas al eje X de una gráfica de línea cada 6 posiciones
 #'
 #'@param graph Objeto del tipo ggplot2 al que desea agregar las etiquetas del eje X
-etiquetasEjeXCadaSeis <- function(graph) {
+etiquetasEjeXCadaSeis <- function(graph, data) {
   d <- ggplot2::ggplot_build(graph)$data[[1]]
   n <- length(d$x)
 
@@ -1223,7 +1223,7 @@ etiquetasEjeXCadaSeis <- function(graph) {
 
   # Rellenar cada sexta etiqueta con el valor correspondiente
   for (i in seq(1, n, by = 6)) {
-    x_labels[i] <- d$x[[i]]
+    x_labels[i] <- d$data[[i]]
   }
 
   # Agregar las etiquetas al gráfico

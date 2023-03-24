@@ -125,6 +125,7 @@ graficaLinea <- function(data, color1 = pkg.env$color1, inicio = -1, ancho = 1.5
   grafica <- ggplot2::ggplot(data, ggplot2::aes(x,y, group=1))
   grafica <- grafica + ggplot2::geom_line( colour = color1, size = ancho)+
     ggplot2::labs(x=NULL,y=NULL)
+  return(grafica)
   if(etiquetaCadaSeis){
     grafica <- etiquetasEjeXCadaSeis(grafica)
   } else {
@@ -134,8 +135,7 @@ graficaLinea <- function(data, color1 = pkg.env$color1, inicio = -1, ancho = 1.5
   ## Rotanto las etiquetas del eje x cuando la modalidad es trimestral
   
   if(pkg.env$modalidad == "trimestral" || rotar == T){
-    print(101)
-    #grafica <- grafica + ggplot2::theme(axis.text.x = ggplot2::element_text(family = pkg.env$fuente,angle = 90, vjust =0.5 , hjust= 1))
+    grafica <- grafica + ggplot2::theme(axis.text.x = ggplot2::element_text(family = pkg.env$fuente,angle = 90, vjust =0.5 , hjust= 1))
   }
   
   minimo <- min(ggplot2::ggplot_build(grafica)$data[[1]]$y)

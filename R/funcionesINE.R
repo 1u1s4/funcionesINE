@@ -335,7 +335,6 @@ etiquetasLineas <- function(graph, posiciones, precision = 1) {
     }
     d$etiqueta <- formatC(as.numeric(completarEtiquetas(dato,i,tam = length(d$x))), format = 'f', big.mark = ',', digits = pkg.env$precision, drop0trailing = enteros)
     # print("#####LAS ETIQUETAS SON ##########" )
-    # print(d$etiqueta)
     if (posiciones[[i]] == 1) {
       graph <- graph + ggplot2::geom_text(data = d, ggplot2::aes(label=ifelse(stringr::str_trim(etiqueta) == "NA" ,"",etiqueta),family=pkg.env$fuente),size=pkg.env$sizeText,hjust = 0.5, vjust = -0.5)
     } else if (posiciones[[i]] == -1) {
@@ -1215,18 +1214,18 @@ arreglar <- function(data){
 #'Le pone las etiquetas al eje X de una gráfica de línea cada 6 posiciones
 #'
 #'@param graph Objeto del tipo ggplot2 al que desea agregar las etiquetas del eje X
-etiquetasEjeXCadaSeis <- function(graph) {
+etiquetasEjeXCadaSeis <- function(graph, data) {
   d <- ggplot2::ggplot_build(graph)$data[[1]]
   n <- length(d$x)
 
+  # Convertir data$x en un factor ordenado
+  data$x <- factor(data$x, levels = unique(data$x))
+
   # Crear un vector de etiquetas vacías
   x_labels <- rep("", n)
-
   # Rellenar cada sexta etiqueta con el valor correspondiente
-  print(d$x)
-  print(d$etiqueta)
   for (i in seq(1, n, by = 6)) {
-    x_labels[i] <- d$x[i]
+    x_labels[i] <- levels(data$x)[i]
   }
 
   # Agregar las etiquetas al gráfico
@@ -1234,3 +1233,4 @@ etiquetasEjeXCadaSeis <- function(graph) {
 
   return(graph)
 }
+

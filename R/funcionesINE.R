@@ -1220,14 +1220,17 @@ etiquetasEjeXCadaSeis <- function(graph, data) {
 
   # Crear un vector de etiquetas vacías
   x_labels <- rep("", n)
+  # Convertir las etiquetas del eje x en una variable continua
+  x_values <- as.numeric(as.character(data$x))
+
   # Rellenar cada sexta etiqueta con el valor correspondiente
   for (i in seq(1, n, by = 6)) {
     x_labels[i] <- data$x[[i]]
-    print(x_labels)
   }
 
   # Agregar las etiquetas al gráfico
-  graph <- graph + ggplot2::scale_x_discrete(labels = x_labels)
+  graph <- graph + ggplot2::scale_x_continuous(labels = x_labels, breaks = x_values)
 
   return(graph)
 }
+

@@ -122,10 +122,12 @@ graficaLinea <- function(data, color1 = pkg.env$color1, inicio = -1, ancho = 1.5
   }
   # print("La modalidad es: \n")
   # print(pkg.env$modalidad)
+  print(2)
+  return(grafica)
+  print(3)
   grafica <- ggplot2::ggplot(data, ggplot2::aes(x,y, group=1))
   grafica <- grafica + ggplot2::geom_line( colour = color1, size = ancho)+
     ggplot2::labs(x=NULL,y=NULL)
-  return(grafica)
   if(etiquetaCadaSeis){
     grafica <- etiquetasEjeXCadaSeis(grafica)
   } else {

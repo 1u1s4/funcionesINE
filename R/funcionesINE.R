@@ -1222,8 +1222,8 @@ etiquetasEjeXCadaSeis <- function(graph, data) {
   x_labels <- rep("", n)
   # Rellenar cada sexta etiqueta con el valor correspondiente
   for (i in seq(1, n, by = 6)) {
-    print(data$x[[i]])
     x_labels[i] <- data$x[[i]]
+    print(x_labels)
   }
 
   # Agregar las etiquetas al gráfico

@@ -127,8 +127,6 @@ graficaLinea <- function(data, color1 = pkg.env$color1, inicio = -1, ancho = 1.5
     ggplot2::labs(x=NULL,y=NULL)
   if(etiquetaCadaSeis){
     grafica <- etiquetasEjeXCadaSeis(grafica, data)
-  } else {
-    print(1)
   }
   grafica <- etiquetasLineas(grafica, calcularPosiciones(grafica), precision = pkg.env$precision)
   margenArriba <- pt2mm(calcularAlto(10))

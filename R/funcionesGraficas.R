@@ -128,8 +128,7 @@ graficaLinea <- function(data, color1 = pkg.env$color1, inicio = -1, ancho = 1.5
   if(etiquetaCadaSeis){
     grafica <- etiquetasEjeXCadaSeis(grafica)
   } else {
-    print(1)
-    #grafica <- etiquetasLineas(grafica, calcularPosiciones(grafica), precision = pkg.env$precision)
+    grafica <- etiquetasLineas(grafica, calcularPosiciones(grafica), precision = pkg.env$precision)
   }
   margenArriba <- pt2mm(calcularAlto(10))
   ## Rotanto las etiquetas del eje x cuando la modalidad es trimestral

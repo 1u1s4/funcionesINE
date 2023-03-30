@@ -116,7 +116,8 @@ graficaLinea <- function(data, color1 = pkg.env$color1, inicio = -1, ancho = 1.5
   ## Cambiando el ancho cuando es trimestral
   if (pkg.env$modalidad == "trimestral" ){
     ancho <- 0.5
-  }else if(pkg.env$modalidad =="presentacion"){
+  #}else if(pkg.env$modalidad =="presentacion"){
+   }else{
     # print('Como presentacion')
     ancho <- 0.8
   }

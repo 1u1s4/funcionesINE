@@ -92,7 +92,7 @@ graficaBar <- function(data, color1 = pkg.env$color1, ancho = 0.6, ordenar = TRU
 #'un decimal.
 #'@export
 
-graficaLinea <- function(data, color1 = pkg.env$color1, inicio = -1, ancho = 1.5, precision=1, escala = "normal", rotar = T, final = NA, etiquetaCadaSeis = F)
+graficaLinea <- function(data, color1 = pkg.env$color1, inicio = -1, ancho = 1.5, precision=1, escala = "normal", rotar = T, final = NA, etiquetaCadaSeis = F, modalidad = "trimestral")
 {
   pkg.env$precision <- precision
   # print("El tamaño de la fuente es: ")
@@ -114,10 +114,10 @@ graficaLinea <- function(data, color1 = pkg.env$color1, inicio = -1, ancho = 1.5
   
   
   ## Cambiando el ancho cuando es trimestral
+  pkg.env$modalidad <- modalidad
   if (pkg.env$modalidad == "trimestral" ){
     ancho <- 0.5
-  #}else if(pkg.env$modalidad =="presentacion"){
-   }else{
+  }else if(pkg.env$modalidad =="presentacion"){
     # print('Como presentacion')
     ancho <- 0.8
   }

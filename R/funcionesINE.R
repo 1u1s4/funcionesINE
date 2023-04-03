@@ -632,7 +632,7 @@ etiquetasVerticales <- function(graph, precision = 1){
 #'
 #'@param nombre Ruta del fichero LaTeX
 #'@param graph Objeto ggplot2 que se desea exportar a LaTeX
-exportarLatex <- function(nombre = grafica.tex, graph, preambulo = F) {
+exportarLatex <- function(nombre = "grafica.tex", graph, preambulo = F) {
   tikzDevice::tikz(nombre, standAlone = preambulo, bareBones = TRUE, bg = "transparent", width = pkg.env$ancho, height= pkg.env$alto, sanitize = F)
   temp<- ggplot2::ggplot_gtable(ggplot2::ggplot_build(graph))
   temp$layout$clip[temp$layout$name=="panel"] <- "off"

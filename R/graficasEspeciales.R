@@ -404,3 +404,46 @@ graficaRadar <- function(data, file, preambulo = F){
   dev.off()
   
 }
+
+#' Gráfica tipo pirámide poblacional
+#' Se utiliza para mostrar la población de un grupo específico por grupos de edad.
+#' @param data Es el data frame a utilizar. Formato usual, dimensión x = grupos de edad, y = población, z = sexo. 
+#' La columna de sexo es binaria solo admite "Hombre" y "Mujer". 
+#' @param file Ruta en donde se exportará la grafica como codigo tikz. 
+#' @param preambulo Booleano que determina si se desea para compilar po si misma
+#' o solamente para incluir en documento maestro. 
+
+graficaPiramide <- function(data, escala = 1){
+  # Calcula datos para etiquetas eje x
+  max_mujeres <- max(subset(data, data$z == "Mujer")$y)
+  mitad_mujeres <- ceiling(max(subset(data, data$z == "Mujer")$y)/2)
+  max_hombres <- max(subset(data, data$z == "Hombre")$y)
+  mitad_hombres <- ceiling(max(subset(data, data$z == "Hombre")$y)/2)
+  Breaks = c(max_mujeres*-1, mitad_mujeres*-1, 0, mitad_hombres, max_hombres)
+  Labels = c(max_mujeres, mitad_mujeres, 0, mitad_hombres, max_hombres)
+  
+  # Hace la población de mujeres negativa para dar forma de pirámide y grafica
+  grafica <- data %>% mutate(y = ifelse(z == "Mujer", y*(-1),
+                             y*1)) %>%
+    ggplot(aes(x = data$x, y = y, fill = z)) +
+    # Usa colores predeterminados del documento
+    scale_fill_manual(name="Sexo", values = c(pkg.env$color1, pkg.env$color2)) + 
+    geom_bar(stat = "identity") +
+    coord_flip() +
+    # Elimina cuadrícula y fondo
+    theme(panel.grid.major = element_blank(), 
+          panel.grid.minor = element_blank(),
+          panel.background = element_blank()) +
+    # Agrega etiquetas de ejes
+    labs(x = "Grupo de edad",
+         y = paste("Población en", case_when(escala == 1 ~ "número de",
+                                             escala == 100 ~ "cientos de",
+                                             escala == 1000 ~"miles de",
+                                             escala == 1000000 ~ "millones de",
+                                             TRUE ~ paste("grupos de", escala)), "personas")) +
+    scale_y_continuous(breaks = Breaks, labels = if(escala == 1){Labels} else {as.numeric(sprintf((Labels/escala), fmt = '%#.1f'))})
+    
+  return(grafica)
+}
+
+

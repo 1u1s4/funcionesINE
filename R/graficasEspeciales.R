@@ -408,7 +408,12 @@ graficaRadar <- function(data, file, preambulo = F){
 #' Gráfica tipo pirámide poblacional
 #' Se utiliza para mostrar la población de un grupo específico por grupos de edad.
 #' @param data Es el data frame a utilizar. Formato usual, dimensión x = grupos de edad, y = población, z = sexo. 
-#' La columna de sexo es binaria solo admite "Hombre" y "Mujer". 
+#' La columna de sexo es binaria solo admite "Hombre" y "Mujer".
+#' Los grupos de edad deben de estar en el orden que se quiere mostrar. Se recomienda usar factor y levels para ordernar la tabla, por ejemplo:
+#' quinqueneos <- c('0-4', '5-9', '10-14', '15-19', '20-24', '25-29', '30-34', 
+#'                 '35-39', '40-44', '45-49', '50-54', '55-59', '60-64', '65-69',
+#'                 '70-74', '75-79', '80-84', '85-89', '90-94', '95-99', '100+')
+#' data$x <- factor(data$x, levels = orden_grupo_edad). 
 #' @param file Ruta en donde se exportará la grafica como codigo tikz. 
 #' @param preambulo Booleano que determina si se desea para compilar po si misma
 #' o solamente para incluir en documento maestro. 

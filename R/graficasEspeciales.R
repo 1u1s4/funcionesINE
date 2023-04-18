@@ -459,17 +459,21 @@ graficaPiramide <- function(data, escala = 1){
 graficaColApilada <-  function(data, categoría_leyenda){
   # Crea colores para división de una misma barra
   colores <- colorRampPalette(c(pkg.env$color1, pkg.env$color2))
+  # Crea gráfica de columnas apiladas
   grafica <- ggplot(data, aes(fill = z, y = y, x = x)) + 
       geom_bar(position="stack", stat="identity") +
-      geom_text(aes(label = sprintf('%.1f', y), y = y, group = z), 
+      geom_text(aes(label = sprintf('%.1f', y), y = y, group = z), # Agrega etiquetas blancas en caada sección
                 position = position_stack(vjust = 0.5), 
                 size = 3, color = "white") +
       scale_fill_manual(name = categoría_leyenda, 
                         values =  colores(length(unique(data$z)))) +
+  # Elimina cuadrícula, fondo, y ejes
       theme(panel.grid.major = element_blank(), 
             panel.grid.minor = element_blank(),
             panel.background = element_blank(),
             axis.title.x = element_blank(),
-            axis.title.y = element_blank())
+            axis.title.y = element_blank(),
+            axis.ticks = element_blank()) +
+  scale_y_continuous(breaks = NULL)
   return(grafica)
 }

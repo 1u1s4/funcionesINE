@@ -451,4 +451,25 @@ graficaPiramide <- function(data, escala = 1){
   return(grafica)
 }
 
+#' Gráfica tipo columnas apiladas (stacked)
+#' Se utiliza para mostrar datos con dos agrupaciones de varias categorías cada una.
+#' @param data Es el data frame a utilizar. Formato usual, dimensión x = primera agrupación mostrada en eje x, y = valor, z = segunda agrupación mostrada en color. 
+#' @param categoría_leyenda nombre de la segunda agrupación (z), aparecerá en leyenda. Por ejemplo: Sexo.
 
+graficaColApilada <-  function(data, categoría_leyenda){
+  # Crea colores para división de una misma barra
+  colores <- colorRampPalette(c(pkg.env$color1, pkg.env$color2))
+  grafica <- ggplot(data, aes(fill = z, y = y, x = x)) + 
+      geom_bar(position="stack", stat="identity") +
+      geom_text(aes(label = sprintf('%.1f', y), y = y, group = z), 
+                position = position_stack(vjust = 0.5), 
+                size = 3, color = "white") +
+      scale_fill_manual(name = categoría_leyenda, 
+                        values =  colores(length(unique(data$z)))) +
+      theme(panel.grid.major = element_blank(), 
+            panel.grid.minor = element_blank(),
+            panel.background = element_blank(),
+            axis.title.x = element_blank(),
+            axis.title.y = element_blank())
+  return(grafica)
+}

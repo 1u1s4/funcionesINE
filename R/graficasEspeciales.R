@@ -438,7 +438,9 @@ graficaPiramide <- function(data, escala = 1){
     # Elimina cuadrícula y fondo
     theme(panel.grid.major = element_blank(), 
           panel.grid.minor = element_blank(),
-          panel.background = element_blank()) +
+          panel.background = element_blank(),
+          axis.text.x = element_text(color = "black"),
+          axis.text.y = element_text(color = "black")) +
     # Agrega etiquetas de ejes
     labs(x = "Grupo de edad",
          y = paste("Población en", case_when(escala == 1 ~ "número de",
@@ -453,11 +455,15 @@ graficaPiramide <- function(data, escala = 1){
 
 #' Gráfica tipo columnas apiladas (stacked)
 #' Se utiliza para mostrar datos con dos agrupaciones de varias categorías cada una.
+#' Las opciones de la primera agrupación se muestran en una columna diferente cuyo tamaño depende del total de la primera agrupación. 
+#' Las opciones de la segunda agrupación se muestran en los colores de cada columna acorde al porcentaje que suponen de la categoría que les contiene.
+#' Por ejemplo, una gráfica de población por sexo según pueblo de pertenencia puede mostrar una columna por cada pueblo de pertenencia y cada columna tendría
+#' dos colores para mostrar la población de hombres y de mujeres en dicho pueblo de pertenencia.
 #' @param data Es el data frame a utilizar. Formato usual, dimensión x = primera agrupación mostrada en eje x, y = valor, z = segunda agrupación mostrada en color. 
 #' @param categoría_leyenda nombre de la segunda agrupación (z), aparecerá en leyenda. Por ejemplo: Sexo.
 
 graficaColApilada <-  function(data, categoría_leyenda){
-  # Crea colores para división de una misma barra
+  # Crea colores para división de una misma columna
   colores <- colorRampPalette(c(pkg.env$color1, pkg.env$color2))
   # Crea gráfica de columnas apiladas
   grafica <- ggplot(data, aes(fill = z, y = y, x = x)) + 
@@ -475,5 +481,41 @@ graficaColApilada <-  function(data, categoría_leyenda){
             axis.title.y = element_blank(),
             axis.ticks = element_blank()) +
   scale_y_continuous(breaks = NULL)
+  return(grafica)
+}
+
+#' Gráfica tipo barra de porcentaje apiladas (stacked).
+#' Se utiliza para mostrar datos con dos agrupaciones de varias categorías cada una.
+#' Las opciones de la primera agrupación se muestran en una barra diferente cada una todas del mismo tamaño. 
+#' Las opciones de la segunda agrupación se muestran en los colores de cada  barra acorde al porcentaje que suponen de la categoría que les contiene.
+#' Por ejemplo, una gráfica de población por sexo según pueblo de pertenencia puede mostrar una barra por cada pueblo de pertenencia y cada barra tendría
+#' dos colores para mostrar la población de hombres y de mujeres en dicho pueblo de pertenencia.
+#' @param data Es el data frame a utilizar. Formato usual, dimensión x = primera agrupación mostrada en eje x, y = valor, z = segunda agrupación mostrada en color. 
+#' @param categoría_leyenda nombre de la segunda agrupación (z), aparecerá en leyenda. Por ejemplo: Sexo.
+
+graficaBarPorcentajeApilada <-  function(data, categoría_leyenda){
+  # Crea colores para división de una misma columna
+  colores <- colorRampPalette(c(pkg.env$color1, pkg.env$color2))
+  # Crea gráfica de columnas apiladas
+  grafica <- ggplot(data, aes(fill = z, y = y, x = x)) + 
+    geom_bar(position="fill", stat="identity") +
+    # Agrega etiquetas blancas y en negritas en cada sección
+    geom_text(aes(label = sprintf('%.1f', y), y = y, group = z),
+              position = position_fill(vjust = 0.5),
+              size = 3, color = "white") +
+    scale_fill_manual(name = categoría_leyenda,
+                      values =  colores(length(unique(data$z)))) +
+    # Convierte las columnas a barras horizontales
+    coord_flip() + 
+    # Elimina cuadrícula, fondo, y ejes
+    theme(panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          panel.background = element_blank(),
+          axis.title.x = element_blank(),
+          axis.title.y = element_blank(),
+          axis.ticks = element_blank(),
+          axis.text.x = element_text(color = "black"),
+          axis.text.y = element_text(color = "black")) +
+    scale_y_continuous(breaks = NULL)
   return(grafica)
 }

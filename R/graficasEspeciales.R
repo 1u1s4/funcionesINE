@@ -491,19 +491,20 @@ graficaColApilada <-  function(data, categoría_leyenda){
 #' Por ejemplo, una gráfica de población por sexo según pueblo de pertenencia puede mostrar una barra por cada pueblo de pertenencia y cada barra tendría
 #' dos colores para mostrar la población de hombres y de mujeres en dicho pueblo de pertenencia.
 #' @param data Es el data frame a utilizar. Formato usual, dimensión x = primera agrupación mostrada en eje x, y = valor, z = segunda agrupación mostrada en color. 
-#' @param categoría_leyenda nombre de la segunda agrupación (z), aparecerá en leyenda. Por ejemplo: Sexo.
+#' @param categoria_leyenda nombre de la segunda agrupación (z), aparecerá en leyenda. Por ejemplo: Sexo.
+#' @param escala es la escala que se trabajará (1, 10, 100, etc.). Por ejemplo: 1 cuando es número exacto. 
 
-graficaBarPorcentajeApilada <-  function(data, categoría_leyenda){
+graficaBarPorcentajeApilada <-  function(data, categoria_leyenda, escala = 1){
   # Crea colores para división de una misma columna
   colores <- colorRampPalette(c(pkg.env$color1, pkg.env$color2))
   # Crea gráfica de columnas apiladas
   grafica <- ggplot(data, aes(fill = z, y = y, x = x)) + 
     geom_bar(position="fill", stat="identity") +
     # Agrega etiquetas blancas y en negritas en cada sección
-    geom_text(aes(label = sprintf('%.1f', y), y = y, group = z),
+    geom_text(aes(label = if(escala == 1){y} else {as.numeric(sprintf(y, fmt = '%.1f'))}, y = y, group = z),
               position = position_fill(vjust = 0.5),
               size = 3, color = "white") +
-    scale_fill_manual(name = categoría_leyenda,
+    scale_fill_manual(name = categoria_leyenda,
                       values =  colores(length(unique(data$z)))) +
     # Convierte las columnas a barras horizontales
     coord_flip() + 

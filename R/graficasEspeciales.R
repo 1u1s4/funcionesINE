@@ -520,3 +520,22 @@ graficaBarPorcentajeApilada <-  function(data, categoria_leyenda, escala = 1){
     scale_y_continuous(breaks = NULL)
   return(grafica)
 }
+
+# TABLA LATEX
+
+tablaLaTeX <- function(data, nombre_columnas = colnames(data), 
+                       nombre_grupos = NULL, opacidad_filas = 0.5, ruta){
+  kbl(data, format = "latex", align = "c", digits = 1, booktabs = TRUE,
+      linesep = "", col.names = nombre_columnas) %>%
+    add_header_above(nombre_grupos, bold = TRUE) %>%
+    kable_styling(latex_options = "striped",
+                  stripe_color = lighten(pkg.env$color2, amount = opacidad_filas)) %>% 
+    row_spec(0, bold = TRUE) %>% 
+    save_kable(ruta)
+  
+  file <- readLines(ruta) %>%
+    .[!grepl("\\\\centering", .)] %>%
+    .[!grepl("\\\\begin\\{table\\}", .)] %>%
+    .[!grepl("\\\\end\\{table\\}", .)]
+  writeLines(file, ruta)
+}

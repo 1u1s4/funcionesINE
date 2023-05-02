@@ -414,9 +414,8 @@ graficaRadar <- function(data, file, preambulo = F){
 #'                 '35-39', '40-44', '45-49', '50-54', '55-59', '60-64', '65-69',
 #'                 '70-74', '75-79', '80-84', '85-89', '90-94', '95-99', '100+')
 #' data$x <- factor(data$x, levels = orden_grupo_edad). 
-#' @param file Ruta en donde se exportará la grafica como codigo tikz. 
-#' @param preambulo Booleano que determina si se desea para compilar po si misma
-#' o solamente para incluir en documento maestro. 
+#' @para escala acepta números que describan cómo se agrupan los valores. Si el valor es 1 se agrupan en unidades (tal cual está el número) si se escribe 1,000 se dividirán los valores
+#' en 1,000 y se mostrará una etiqueta de "miles de personas". 
 
 graficaPiramide <- function(data, escala = 1){
   # Calcula datos para etiquetas eje x
@@ -521,7 +520,32 @@ graficaBarPorcentajeApilada <-  function(data, categoria_leyenda, escala = 1){
   return(grafica)
 }
 
-# TABLA LATEX
+#' Exporta código LaTeX desde R para la generación de tablas.
+#' Se utiliza para mostrar datos con y sin agrupaciones de varias categorías cada una. 
+#' @param data Es el data frame a utilizar. El formato que se pase a la función será como se vea la tabla.
+#' @param nombre_columnas permite cambiar el nombre de las columnas. Por defecto se usa el nombre de las columnas en R. 
+#' Se pueden cambiar el nombre de las columnas igualando nombre_columnas con un array con los nuevos nombre de las columnas.
+#' @param nombre_grupos permite agrupar columnas. Si se desea una tabla simple, entonces omitir el parámetro nombre_grupos. 
+#' Para una tabla con agrupaciones de columnas, utilizar el parámetro nombre_grupos de la siguiente manera:
+#' nombre_grupos = c("Agrupación 1" = p, "Agrupación 2" = q, ... , "Agrupación n" = m)
+#' Donde "Agrupación 1" debe ser sustituido por el nommbre que se desea en la columna así sucesivamente. p,q, ..., m representan el número
+#' de columnas que dicha agrupación abarca. La suma de p,q, ..., m debe ser igual al total de columnas simples que hay en la tabla.
+#' @param opacidad_filas acepta valores de 0 a 1. Este controla la transparencia de la banda que divide a las filas. 1 es completamente transparente, 0 es el color tal cual se pasó de package.  
+#' @param ruta especifica a donde exportar la grafica como codigo tikz. 
+#' Por ejemplo en la siguiente tabla:
+#'                        2018         |              2022
+#'--------------------------------------------------------------------
+#' Edad         |   Mujer   |  Hombre  |   Mujer  |  Hombre |    N/A
+#'--------------------------------------------------------------------
+#' 0-17         |    5.2    |   5.2    |   4.8    |   4.4   |    0.2
+#'--------------------------------------------------------------------
+#' 18-30        |   17.2    |   10.2   |   25.8   |   23.4  |    0.9
+#'--------------------------------------------------------------------
+#' 30 +         |   56.2    |  46.2    |   58.1   |   60.3  |    1.3
+#'--------------------------------------------------------------------
+#' Se debe escribir: nombre_columnas = c("Edad", "Mujer", "Hombre", "Mujer", "Hombre", "N/A")
+#' Se debe escribir: nombre_grupos = c("" = 1, "2018" = 2, "2022" = 3)
+#' La primera agrupación está en blanco ya que no deseo que la columna edad pertenzca a ninguna agrupación. 
 
 tablaLaTeX <- function(data, nombre_columnas = colnames(data), 
                        nombre_grupos = NULL, opacidad_filas = 0.5, ruta){

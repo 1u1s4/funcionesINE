@@ -483,30 +483,42 @@ graficaColApilada <-  function(data, categoría_leyenda){
   return(grafica)
 }
 
-#' Gráfica tipo barra de porcentaje apiladas (stacked).
+#' Gráfica tipo barras o columnas de porcentaje apiladas (stacked).
 #' Se utiliza para mostrar datos con dos agrupaciones de varias categorías cada una.
 #' Las opciones de la primera agrupación se muestran en una barra diferente cada una todas del mismo tamaño. 
 #' Las opciones de la segunda agrupación se muestran en los colores de cada  barra acorde al porcentaje que suponen de la categoría que les contiene.
 #' Por ejemplo, una gráfica de población por sexo según pueblo de pertenencia puede mostrar una barra por cada pueblo de pertenencia y cada barra tendría
 #' dos colores para mostrar la población de hombres y de mujeres en dicho pueblo de pertenencia.
 #' @param data Es el data frame a utilizar. Formato usual, dimensión x = primera agrupación mostrada en eje x, y = valor, z = segunda agrupación mostrada en color. 
-#' @param categoria_leyenda nombre de la segunda agrupación (z), aparecerá en leyenda. Por ejemplo: Sexo.
-#' @param escala es la escala que se trabajará (1, 10, 100, etc.). Por ejemplo: 1 cuando es número exacto. 
+#' @param categoria_leyenda nombre de la segunda agrupación (z), aparecerá en leyenda. Por ejemplo: Sexo. Por defecto no se muestra nada.
+#' @param decimales indica si los valores a mostrar tienen decimales. Por defecto es TRUE porque espera decimales. 
+#' @param tipo indica el si se desea "barra" o "columna". Por defecto es tipo "barra".
+#' @param leyenda especifíca la posición de la leyenda. Por defecto está en "lado" (lado izquierdo), admite "arriba" y "abajo".
 
-graficaBarPorcentajeApilada <-  function(data, categoria_leyenda, escala = 1){
+graficaPorcentajeApilada <-  function(data, categoria_leyenda = "", decimales = TRUE,
+                                      tipo = "barra", leyenda = "lado"){
+  # Verificando si es válida la entrada de los parámetros "tipo" y "leyenda"
+  if(!tipo %in% c("barra", "columna")) {
+    stop("El valor de tipo debe ser 'barra' o 'columna'")
+  }
+  
+  if(!leyenda %in% c("lado", "abajo", "arriba")) {
+    stop("El valor de leyenda debe ser 'lado', 'abajo' o 'arriba'")
+  }
+  
   # Crea colores para división de una misma columna
   colores <- colorRampPalette(c(pkg.env$color1, pkg.env$color2))
+  
   # Crea gráfica de columnas apiladas
   grafica <- ggplot(data, aes(fill = z, y = y, x = x)) + 
     geom_bar(position="fill", stat="identity") +
     # Agrega etiquetas blancas y en negritas en cada sección
-    geom_text(aes(label = if(escala == 1){y} else {as.numeric(sprintf(y, fmt = '%.1f'))}, y = y, group = z),
+    geom_text(aes(label = if(decimales == FALSE){y} else {as.numeric(sprintf(y, fmt = '%.1f'))}, y = y, group = z),
               position = position_fill(vjust = 0.5),
               size = 3, color = "white") +
     scale_fill_manual(name = categoria_leyenda,
                       values =  colores(length(unique(data$z)))) +
-    # Convierte las columnas a barras horizontales
-    coord_flip() + 
+    
     # Elimina cuadrícula, fondo, y ejes
     theme(panel.grid.major = element_blank(),
           panel.grid.minor = element_blank(),
@@ -516,7 +528,21 @@ graficaBarPorcentajeApilada <-  function(data, categoria_leyenda, escala = 1){
           axis.ticks = element_blank(),
           axis.text.x = element_text(color = "black"),
           axis.text.y = element_text(color = "black")) +
-    scale_y_continuous(breaks = NULL)
+    scale_y_continuous(breaks = NULL) +
+    guides(fill = guide_legend(override.aes = list(size = 4), keywidth = 0.4, keyheight = 0.4))
+  
+  # Convierte las columnas a barras horizontales
+  if (tipo == "barra") {
+    grafica <- grafica + coord_flip()
+  }
+  
+  # Cambiando posición de leyenda
+  if (leyenda == "abajo") {
+    grafica <- grafica + theme(legend.position = "bottom")
+  } else if (leyenda == "arriba") {
+    grafica <- grafica + theme(legend.position = "top")
+  }
+  
   return(grafica)
 }
 

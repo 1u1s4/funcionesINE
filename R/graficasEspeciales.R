@@ -452,34 +452,63 @@ graficaPiramide <- function(data, escala = 1){
   return(grafica)
 }
 
-#' Gráfica tipo columnas apiladas (stacked)
+#' Gráfica tipo columnas o barras apiladas (stacked)
 #' Se utiliza para mostrar datos con dos agrupaciones de varias categorías cada una.
 #' Las opciones de la primera agrupación se muestran en una columna diferente cuyo tamaño depende del total de la primera agrupación. 
 #' Las opciones de la segunda agrupación se muestran en los colores de cada columna acorde al porcentaje que suponen de la categoría que les contiene.
 #' Por ejemplo, una gráfica de población por sexo según pueblo de pertenencia puede mostrar una columna por cada pueblo de pertenencia y cada columna tendría
 #' dos colores para mostrar la población de hombres y de mujeres en dicho pueblo de pertenencia.
 #' @param data Es el data frame a utilizar. Formato usual, dimensión x = primera agrupación mostrada en eje x, y = valor, z = segunda agrupación mostrada en color. 
-#' @param categoría_leyenda nombre de la segunda agrupación (z), aparecerá en leyenda. Por ejemplo: Sexo.
+#' @param categoria_leyenda nombre de la segunda agrupación (z), aparecerá en leyenda. Por ejemplo: Sexo. Por defecto no se muestra nada.
+#' @param decimales indica si los valores a mostrar tienen decimales. Por defecto es TRUE porque espera decimales. 
+#' @param tipo indica el si se desea "barra" o "columna". Por defecto es tipo "barra".
+#' @param leyenda especifíca la posición de la leyenda. Por defecto está en "lado" (lado izquierdo), admite "arriba" y "abajo".
 
-graficaColApilada <-  function(data, categoría_leyenda){
+graficaApilada <-  function(data, categoria_leyenda = "", tipo = "columna", 
+                            decimales = TRUE, leyenda = "lado"){
+  # Verificando si es válida la entrada de los parámetros "tipo" y leyenda
+  if(!tipo %in% c("barra", "columna")) {
+    stop("El valor de tipo debe ser 'barra' o 'columna'")
+  }
+  
+  if(!leyenda %in% c("lado", "abajo", "arriba")) {
+    stop("El valor de leyenda debe ser 'lado', 'abajo' o 'arriba'")
+  }
+  
   # Crea colores para división de una misma columna
   colores <- colorRampPalette(c(pkg.env$color1, pkg.env$color2))
   # Crea gráfica de columnas apiladas
   grafica <- ggplot(data, aes(fill = z, y = y, x = x)) + 
-      geom_bar(position="stack", stat="identity") +
-      geom_text(aes(label = sprintf('%.1f', y), y = y, group = z), # Agrega etiquetas blancas en caada sección
-                position = position_stack(vjust = 0.5), 
-                size = 3, color = "white") +
-      scale_fill_manual(name = categoría_leyenda, 
-                        values =  colores(length(unique(data$z)))) +
-  # Elimina cuadrícula, fondo, y ejes
-      theme(panel.grid.major = element_blank(), 
-            panel.grid.minor = element_blank(),
-            panel.background = element_blank(),
-            axis.title.x = element_blank(),
-            axis.title.y = element_blank(),
-            axis.ticks = element_blank()) +
-  scale_y_continuous(breaks = NULL)
+    geom_bar(position="stack", stat="identity") +
+    geom_text(aes(label = if(decimales == FALSE){y} else {as.numeric(sprintf(y, fmt = '%.1f'))}, 
+                  y = y, group = z), # Agrega etiquetas blancas en caada sección
+              position = position_stack(vjust = 0.5), 
+              size = 3, color = "white") +
+    scale_fill_manual(name = categoria_leyenda, 
+                      values =  colores(length(unique(data$z)))) +
+    #Configurando fondo, ejes, y tamaño de cuadros de leyenda 
+    theme(panel.grid.major = element_blank(), 
+          panel.grid.minor = element_blank(),
+          panel.background = element_blank(),
+          axis.title.x = element_blank(),
+          axis.title.y = element_blank(),
+          axis.ticks = element_blank()) +
+    scale_y_continuous(breaks = NULL) +
+    guides(fill = guide_legend(override.aes = list(size = 4), keywidth = 0.4, keyheight = 0.4))
+  
+  # Rotando el eje si se requiere tipo barra, por defecto tipo columna
+  if(tipo == "barra") {
+    grafica <- grafica + #geom_bar(position = "dodge", stat = "identity") +
+      coord_flip()
+  }
+  
+  # Cambiando posición de leyenda
+  if (leyenda == "abajo") {
+    grafica <- grafica + theme(legend.position = "bottom")
+  } else if (leyenda == "arriba") {
+    grafica <- grafica + theme(legend.position = "top")
+  }
+  
   return(grafica)
 }
 
@@ -556,7 +585,8 @@ graficaPorcentajeApilada <-  function(data, categoria_leyenda = "", decimales = 
 #' nombre_grupos = c("Agrupación 1" = p, "Agrupación 2" = q, ... , "Agrupación n" = m)
 #' Donde "Agrupación 1" debe ser sustituido por el nommbre que se desea en la columna así sucesivamente. p,q, ..., m representan el número
 #' de columnas que dicha agrupación abarca. La suma de p,q, ..., m debe ser igual al total de columnas simples que hay en la tabla.
-#' @param opacidad_filas acepta valores de 0 a 1. Este controla la transparencia de la banda que divide a las filas. 1 es completamente transparente, 0 es el color tal cual se pasó de package.  
+#' @param opacidad_filas acepta valores de 0 a 1. Este controla la transparencia de la banda que divide a las filas.
+#' 1 es completamente transparente, 0 es el color tal cual se pasó de package. Por defecto es 0.5. 
 #' @param ruta especifica a donde exportar la grafica como codigo tikz. 
 #' Por ejemplo en la siguiente tabla:
 #'                        2018         |              2022
@@ -588,4 +618,174 @@ tablaLaTeX <- function(data, nombre_columnas = colnames(data),
     .[!grepl("\\\\begin\\{table\\}", .)] %>%
     .[!grepl("\\\\end\\{table\\}", .)]
   writeLines(file, ruta)
+}
+
+#' Grafica multiples anillos concéntricos, es decir cada anillo permite una desagregación y los anillos en sí mismos otra desagregación.
+#' ATENCIÓN: No se recomienda desagregar en más de tres anillos y 4 o 5 divisiones por anillo. Usar solo con datos cuyos datos sean mayores a 5% cada uno. 
+#' @param data es el dataframe a usar. Debe tener al menos 3 columnas (estas serán las graficadas) x, y, z. x es la categoría que agrupe en anillos 
+#' se sugiere que esta columan no tenga más que tres categorías. La columna y indica los porcentajes a graficar. La columna z indica la desagregación que se hará en cada
+#' anillo por color, se sugiere un máximo de 5 categorías en esta columna. 
+#' @param categoria_leyenda nombre de la segunda agrupación (z), aparecerá en leyenda. Por ejemplo: Sexo. Por defecto no se muestra nada.
+#' @param decimales indica si los valores a mostrar tienen decimales. Por defecto es TRUE porque espera decimales. 
+#' @param leyenda especifíca la posición de la leyenda. Por defecto está en "lado" (lado izquierdo), admite "arriba" y "abajo".
+
+graficaAnillosMultiples <- function(data, categoria_leyenda = "", 
+                                    leyenda = "arriba", decimales = TRUE){
+  test <- graficaPorcentajeApilada(c1_02, tipo = "barra", leyenda = "arriba")
+  
+  # Creando segunda leyenda de orden de anillos
+  leyenda2 <- ""
+  for (i in 1:length(c1_02$x)) { if (duplicated(data$x)[i] == FALSE) {
+    leyenda2 <- paste0(leyenda2, i, ": ", as.character(data$x[i]), "\n")}
+  }
+  
+  # Creando gráfica
+  grafica <- graficaPorcentajeApilada(data, categoria_leyenda = categoria_leyenda,
+                                      decimales =  decimales, tipo = "barra",
+                                      leyenda = leyenda) +
+    coord_polar("y") +
+    theme( axis.text.y = element_blank(),
+           axis.text.x = element_blank()) +
+    geom_text(aes(label = ifelse(duplicated(x), x, "")), position = position_fill(vjust = 0), 
+              size = 4, color = "white", fontface = "bold") +
+    labs(caption = leyenda2) +
+    theme(plot.caption = element_text(size = 10, color = "black", hjust = 0))
+  
+  return(grafica)
+}
+
+#' Grafica barras o columnas agrupadas por categoría.
+#' @param data es el dataframe a usar. Debe tener al menos 3 columnas (estas serán las graficadas) x, y, z. x es la categoría por la que se agruparán las columnas. 
+#' La columna y indica los porcentajes a graficar. La columna z indica la desagregación que se hará en cada grupo (cambia el color de la barra).
+#' @param categoria_leyenda nombre de la segunda agrupación (z), aparecerá en leyenda. Por ejemplo: Sexo. Por defecto no se muestra nada.
+#' @param decimales indica si los valores a mostrar tienen decimales. Por defecto es TRUE porque espera decimales. 
+#' @param leyenda especifíca la posición de la leyenda. Por defecto está en "lado" (lado izquierdo), admite "arriba" y "abajo".
+
+graficaCategorias <- function(data, tipo = "columna", decimales = TRUE, 
+                                    categoria_leyenda = "", leyenda = "lado") {
+  # Verificando si es válida la entrada de los parámetros "tipo" y "leyenda"
+  if(!tipo %in% c("barra", "columna")) {
+    stop("El valor de tipo debe ser 'barra' o 'columna'")
+  }
+  
+  if(!leyenda %in% c("lado", "abajo", "arriba")) {
+    stop("El valor de leyenda debe ser 'lado', 'abajo' o 'arriba'")
+  }
+  
+  # Cargando colores
+  colores <- colorRampPalette(c(pkg.env$color1, pkg.env$color2))
+  
+  # Creando gráfica
+  grafica <- ggplot(data, aes(x = x, y = y, fill = z)) +
+    scale_fill_manual(name = categoria_leyenda,
+                      values =  colores(length(unique(data$z))))
+  
+  # Rotando el eje si se requiere tipo barra
+  if(tipo == "barra") {
+    grafica <- grafica + geom_bar(position = "dodge", stat = "identity") +
+      coord_flip() +
+      theme(axis.text.x = element_blank(),
+            axis.text.y = element_text(color = "black")) +
+      geom_text(aes(label = if(decimales == FALSE){y} else {as.numeric(sprintf(y, fmt = '%.1f'))}), 
+                size = 3, position = position_dodge(width = 1), hjust = -0.5)
+  } else {
+  # Dejando el eje por defecto tipo columna
+    grafica <- grafica + geom_col(position = "dodge") +
+      theme(axis.text.x = element_text(color = "black"),
+            axis.text.y = element_blank()) +
+      geom_text(aes(label = if(decimales == FALSE){y} else {as.numeric(sprintf(y, fmt = '%.1f'))}), 
+                size = 3, position = position_dodge(width = 1), vjust = -1)
+  }
+  
+  # Cambiando posición de leyenda
+  if (leyenda == "abajo") {
+    grafica <- grafica + theme(legend.position = "bottom")
+  } else if (leyenda == "arriba") {
+    grafica <- grafica + theme(legend.position = "top")
+    }
+  
+  #Configurando fondo, ejes, y tamaño de cuadros de leyenda
+  grafica <- grafica + theme(panel.grid.major = element_blank(),
+                   panel.grid.minor = element_blank(),
+                   panel.background = element_blank(),
+                   axis.title.x = element_blank(),
+                   axis.title.y = element_blank(),
+                   axis.ticks = element_blank()) +
+    guides(fill = guide_legend(override.aes = list(size = 4), keywidth = 0.4, keyheight = 0.4))
+  return(grafica)
+}
+
+#' Grafica barra o columnas agrupadas por categoría y con porcentaje apilados. Es decir, admite tres desagregaciones.
+#' @param data es el dataframe a usar. Debe tener al menos 4 columnas (estas serán las graficadas) x, y, z, w. w es la categoría por la que se agruparán las columnas. 
+#' La columna y indica los porcentajes a graficar. La columna z indica la desagregación que se hará en cada columna (stacked), cambiará el color de ese pedazo
+#' de cada barra dependiendo de su desagregación. La columna x indica la categoría de cada barra. Por ejemplo, si se quiere tener una grafica que indique un porcentaje,
+#' por pueblo de pertenencia, sexo y año, se puede poner la tabla de la siguiente manera:
+#' x -> Pueblos de pertenencia, y -> porcentajes, z -> Sexo, w -> Año
+#' Esa tabla mostraría dos columnas por cada pueblo de pertenencia, cada una dividia en su respectivo porcentaje por sexo marcado con diferente color (stacked)
+#' cada columna estaría agrupada con otras columnas de pueblos correspondiente a cada año. 
+#' @param categoria_leyenda nombre de la segunda agrupación (z), aparecerá en leyenda. Por ejemplo: Sexo. Por defecto no se muestra nada.
+#' @param decimales indica si los valores a mostrar tienen decimales. Por defecto es TRUE porque espera decimales. 
+#' @param leyenda especifíca la posición de la leyenda. Por defecto está en "lado" (lado izquierdo), admite "arriba" y "abajo".
+#' @param opacidad_categoria acepta valores de 0 a 1. Este controla la transparencia del recuadro que divide agrupa las columnas (w). 
+#' 1 es completamente transparente, 0 es el color tal cual se pasó de package. Por defecto es 0.75.
+
+graficaCategoriasApiladas <- function(data, tipo = "columna", decimales = TRUE, 
+                              categoria_leyenda = "", leyenda = "lado", opacidad_categoria = 0.75) {
+  # Verificando si es válida la entrada de los parámetros "tipo" y "leyenda"
+  if(!tipo %in% c("barra", "columna")) {
+    stop("El valor de tipo debe ser 'barra' o 'columna'")
+  }
+  
+  if(!leyenda %in% c("lado", "abajo", "arriba")) {
+    stop("El valor de leyenda debe ser 'lado', 'abajo' o 'arriba'")
+  }
+  
+  # Cargando colores
+  colores <- colorRampPalette(c(pkg.env$color1, pkg.env$color2))
+  
+  # Creando gráfica
+  grafica <- ggplot(data, aes(x = x, y = y, fill = z)) +
+    scale_fill_manual(name = categoria_leyenda,
+                      values =  colores(length(unique(data$z))))
+  
+  # Rotando el eje si se requiere tipo barra
+  if(tipo == "barra") {
+    grafica <- grafica + geom_bar(position="stack", stat="identity") +
+      coord_flip() +
+      facet_grid(rows = vars(w)) +
+      theme(axis.text.x = element_blank(),
+            axis.text.y = element_text(color = "black")) +
+      geom_text(aes(label = if(decimales == FALSE){y} else {as.numeric(sprintf(y, fmt = '%.1f'))}, 
+                    y = y, group = z), # Agrega etiquetas blancas en caada sección
+                position = position_stack(vjust = 0.5), 
+                size = 3, color = "white")
+  } else {
+    # Dejando el eje por defecto tipo columna
+    grafica <- grafica + geom_bar(position="stack", stat="identity") +
+      facet_grid(~ w, switch = "y") +
+      theme(axis.text.x = element_text(color = "black"),
+            axis.text.y = element_blank()) +
+      geom_text(aes(label = if(decimales == FALSE){y} else {as.numeric(sprintf(y, fmt = '%.1f'))}, 
+                    y = y, group = z), # Agrega etiquetas blancas en caada sección
+                position = position_stack(vjust = 0.5), 
+                size = 3, color = "white")
+  }
+  
+  # Cambiando posición de leyenda
+  if (leyenda == "abajo") {
+    grafica <- grafica + theme(legend.position = "bottom")
+  } else if (leyenda == "arriba") {
+    grafica <- grafica + theme(legend.position = "top")
+  }
+  
+  #Configurando fondo, ejes, y tamaño de cuadros de leyenda
+  grafica <- grafica + theme(panel.grid.major = element_blank(),
+                             panel.grid.minor = element_blank(),
+                             panel.background = element_blank(),
+                             axis.title.x = element_blank(),
+                             axis.title.y = element_blank(),
+                             axis.ticks = element_blank(),
+                             strip.background = element_rect(fill = lighten(pkg.env$color2, amount = opacidad_categoria))) +
+    guides(fill = guide_legend(override.aes = list(size = 4), keywidth = 0.4, keyheight = 0.4))
+  return(grafica)
 }

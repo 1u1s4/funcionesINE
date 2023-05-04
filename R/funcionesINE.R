@@ -1029,7 +1029,7 @@ leerLibro <- function (ruta, codificacion = 'iso') {
 #' @return Una lista con los data frame que contiene la información.
 
 leerLibroNormal <- function (ruta, codificacion = 'iso') {
-  libro <- xlsx::loadWorkbook(ruta, encoding = "latin1")
+  libro <- xlsx::loadWorkbook(ruta)
   hojas <- xlsx::getSheets(libro)
   nombres <- names(hojas)
   lista <- list()

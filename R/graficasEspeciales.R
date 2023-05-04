@@ -631,7 +631,6 @@ tablaLaTeX <- function(data, nombre_columnas = colnames(data),
 
 graficaAnillosMultiples <- function(data, categoria_leyenda = "", 
                                     leyenda = "arriba", decimales = TRUE){
-  test <- graficaPorcentajeApilada(c1_02, tipo = "barra", leyenda = "arriba")
   
   # Creando segunda leyenda de orden de anillos
   leyenda2 <- ""

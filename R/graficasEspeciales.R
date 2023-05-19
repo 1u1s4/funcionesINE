@@ -634,8 +634,10 @@ graficaAnillosMultiples <- function(data, categoria_leyenda = "",
   
   # Creando segunda leyenda de orden de anillos
   leyenda2 <- ""
+  j <- 0
   for (i in 1:length(data$x)) { if (duplicated(data$x)[i] == FALSE) {
-    leyenda2 <- paste0(leyenda2, i, ": ", as.character(data$x[i]), "\n")}
+    j <- j + 1
+    leyenda2 <- paste0(leyenda2, j, ": ", as.character(data$x[i]), "\n")}
   }
   
   # Creando gráfica

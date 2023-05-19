@@ -628,17 +628,11 @@ tablaLaTeX <- function(data, nombre_columnas = colnames(data),
 #' @param categoria_leyenda nombre de la segunda agrupación (z), aparecerá en leyenda. Por ejemplo: Sexo. Por defecto no se muestra nada.
 #' @param decimales indica si los valores a mostrar tienen decimales. Por defecto es TRUE porque espera decimales. 
 #' @param leyenda especifíca la posición de la leyenda. Por defecto está en "lado" (lado izquierdo), admite "arriba" y "abajo".
+#' @param leyenda_circulos especifica si se debe incluir etiquetas de la categoría (i.e. números) para cada círculo y su respectiva leyenda, o el nombre de cada categoría sin leyenda.  
+#' Por defecto está en TRUE que incluye etiqueta con leyenda.
 
-graficaAnillosMultiples <- function(data, categoria_leyenda = "", 
-                                    leyenda = "arriba", decimales = TRUE){
-  
-  # Creando segunda leyenda de orden de anillos
-  leyenda2 <- ""
-  j <- 0
-  for (i in 1:length(data$x)) { if (duplicated(data$x)[i] == FALSE) {
-    j <- j + 1
-    leyenda2 <- paste0(leyenda2, j, ": ", as.character(data$x[i]), "\n")}
-  }
+graficaAnillosMultiplesTEST <- function(data, categoria_leyenda = "", 
+                                    leyenda = "arriba", decimales = TRUE, leyenda_circulos = TRUE){
   
   # Creando gráfica
   grafica <- graficaPorcentajeApilada(data, categoria_leyenda = categoria_leyenda,
@@ -647,10 +641,29 @@ graficaAnillosMultiples <- function(data, categoria_leyenda = "",
     coord_polar("y") +
     theme( axis.text.y = element_blank(),
            axis.text.x = element_blank()) +
-    geom_text(aes(label = ifelse(duplicated(x), x, "")), position = position_fill(vjust = 0), 
-              size = 4, color = "white", fontface = "bold") +
-    labs(caption = leyenda2) +
     theme(plot.caption = element_text(size = 10, color = "black", hjust = 0))
+  
+  if(leyenda_circulos == TRUE){
+    # Creando segunda leyenda de orden de anillos
+    leyenda2 <- ""
+    j <- 0
+    etiquetas <- c()
+    for (i in 1:length(data$x)) { if (duplicated(data$x)[i] == FALSE) {
+      j <- j + 1
+      etiquetas <- append(etiquetas, j)
+      leyenda2 <- paste0(leyenda2, j, ": ", as.character(data$x[i]), "\n")
+      } else {
+        etiquetas <- append(etiquetas, "")
+      }
+     
+    }
+    grafica <- grafica + geom_text(aes(label = etiquetas), position = position_fill(vjust = 0), 
+                                   size = 4, color = "white", fontface = "bold") +
+      labs(caption = leyenda2)
+  } else {
+    grafica <- grafica + geom_text(aes(label = ifelse(duplicated(x) == FALSE, x, "")), position = position_fill(vjust = 0), 
+                                   size = 4, color = "white", fontface = "bold")
+  }
   
   return(grafica)
 }

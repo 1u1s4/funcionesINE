@@ -631,7 +631,7 @@ tablaLaTeX <- function(data, nombre_columnas = colnames(data),
 #' @param leyenda_circulos especifica si se debe incluir etiquetas de la categoría (i.e. números) para cada círculo y su respectiva leyenda, o el nombre de cada categoría sin leyenda.  
 #' Por defecto está en TRUE que incluye etiqueta con leyenda.
 
-graficaAnillosMultiplesTEST <- function(data, categoria_leyenda = "", 
+graficaAnillosMultiples <- function(data, categoria_leyenda = "", 
                                     leyenda = "arriba", decimales = TRUE, leyenda_circulos = TRUE){
   
   # Creando gráfica

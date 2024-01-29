@@ -2,12 +2,11 @@ Package: funcionesINE
 Encoding: UTF-8
 Type: Package
 Title: Funcion para estilos y creacion de graficas
-Version: 2.0.0
-Date: 2015-01-10
-Author: Hugo Garcia <hugoallangm@gmail.com>
-Maintainer: Hugo Garcia <hugoallanmg@gmail.com>
+Version: 2.0.1
+Date: 2024-01-29
+Author: Hugo Garcia <<hugoallanmg@gmail.com>
+Maintainer: Lester Guerra <l-ster@tutanota.com>
 Imports: 
-  dataframes2xls,
   extrafont,
   Rttf2pt1(>= 1.3.8),
   foreign,
@@ -29,7 +28,7 @@ Imports:
   munsell,
   stringi,
   fmsb
-Description: Algoritmos basicos para la creacion de cuadros estadisticos con estilos propios
+Description: Fork de la versión hallada en github.com/1u1s4/funcionesINE
 License: GNU
 LazyData: true
 RoxygenNote: 7.2.3
